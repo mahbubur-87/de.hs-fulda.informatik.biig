@@ -7,7 +7,7 @@ Our web application BiiG alleviates customers and listing agents to find/rent mo
 In addition to our unique features,our website is based on the functional range of known real estates sites: For example this includes the search for specific properties by price,size or number of rooms.Afterwards,the interested consumer/buyer can contact directly the corresponding listing agents for the property.BiiG is based on the most up to date technologies and thus offers,with regard to performance at the state of the art.
 
 # Individual Part:
-Swift 4, Xcode 9.2, Google Maps API, Google Direction Web Service.
+Swift 4, Xcode 9.2, Google Maps API, Google Direction Web Service, BiiG Heroku Cloud API.
 
 # How to run the project in Xcode 9:
 1. This project has 3 dependencies. All are exist within biig-ios-mahbub/Pods directory.
