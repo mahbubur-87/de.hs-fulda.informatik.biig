@@ -7,7 +7,18 @@ Our web application BiiG alleviates customers and listing agents to find/rent mo
 In addition to our unique features,our website is based on the functional range of known real estates sites: For example this includes the search for specific properties by price,size or number of rooms.Afterwards,the interested consumer/buyer can contact directly the corresponding listing agents for the property.BiiG is based on the most up to date technologies and thus offers,with regard to performance at the state of the art.
 
 # Teamwork:
-https://evening-waters-97508.herokuapp.com/
+Application Url: https://evening-waters-97508.herokuapp.com/
+
+I worked mainly in Backend development and few in Frontend development those include as follows:
+1. Database design and normalization
+2. Create store procedure for creating customer
+3. Write some util sql queries to load data in frontend such as in drop-down menu, checkboxes etc.
+4. Create dynamic search, sort sql query for searching and sorting properties as per user input or filter criterias.
+5. Create MVC structure of property search at the beginning of the project so that other members can follow the dataflow of MVC for further development.
+6. Worked on the following features:
+        property search, 
+        add favorite properties, 
+        agent dashboard including sql quries, UI design.
 
 # Individual Part:
 Swift 4, Xcode 9.2, Google Maps API, Google Direction Web Service, BiiG Heroku Cloud API.
