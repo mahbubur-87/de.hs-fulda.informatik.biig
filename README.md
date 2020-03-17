@@ -6,6 +6,9 @@ Our web application BiiG alleviates customers and listing agents to find/rent mo
 
 In addition to our unique features,our website is based on the functional range of known real estates sites: For example this includes the search for specific properties by price,size or number of rooms.Afterwards,the interested consumer/buyer can contact directly the corresponding listing agents for the property.BiiG is based on the most up to date technologies and thus offers,with regard to performance at the state of the art.
 
+# Teamwork:
+https://evening-waters-97508.herokuapp.com/
+
 # Individual Part:
 Swift 4, Xcode 9.2, Google Maps API, Google Direction Web Service, BiiG Heroku Cloud API.
 
