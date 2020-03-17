@@ -9,7 +9,7 @@ In addition to our unique features,our website is based on the functional range 
 # Teamwork:
 Application Url: https://evening-waters-97508.herokuapp.com/
 
-I worked mainly in Backend development and few in Frontend development those include as follows:
+Teamwork consists of few milestones those inlcude planning, analysis, design, implementation and testing. I work in analysis, design, implemetation phases. My role is Backend developer and also perform few development in Frontend as per professor's guidence to switch roles. My contributions in the project as a team member are given bellow:
 1. Database design and normalization
 2. Create store procedure for creating customer
 3. Write some util sql queries to load data in frontend such as in drop-down menu, checkboxes etc.
