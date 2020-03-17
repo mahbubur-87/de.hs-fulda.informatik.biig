@@ -1,0 +1,276 @@
+<!--
+PropertyDetails.ejs
+
+Description:
+This is Property Details page
+
+Authors:Akhila,Mahdis,Aleks,Mahbubur-->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>BiiG</title>
+        <% include _linkToStylesheets.html %>
+    </head>
+    <body>
+        <% include _header.ejs %>
+        <% include _modalSignIn.html %>
+        <% include _modalSignUp.html %>
+        <br/><br/><br/><br/>
+        <div class="row container-fluid m-3 p-3">
+            <% if(locals.userProfile){%>
+            <div class="col-lg-8 text-align-center">
+                <p class="h3-responsive"><%=property.title%>  <% include _videoViewer.html %> </p>
+                <p class="h5-responsive"><%=property.housenumber%>,<%=property.street%><br><%=property.plz%>,<%=property.city%><br><%=property.state%>,<%=property.country%></p>
+                <!-- carousel start-->
+                <% if(property.image1 || property.image2 || property.image3){%>
+                <div class="slider">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- main slider carousel items -->
+                        <div class="carousel-inner">
+                            <% if(property.image1){%>
+                            <div class="active item carousel-item" data-slide-number="0">
+                                <img src="<%=property.image1%>" class="w-100 img-fluid">
+                            </div>
+                            <%}%>
+                            <% if(property.image2){%>
+                            <div class="item carousel-item" data-slide-number="1">
+                                <img src="<%=property.image2%>" class="w-100 img-fluid">
+                            </div>
+                            <%}%>
+                            <% if(property.image3){%>
+                            <div class="item carousel-item" data-slide-number="2">
+                                <img src="<%=property.image3%>" class="w-100 img-fluid">
+                            </div>
+                            <%}%>
+                        </div>
+                        <!-- main slider carousel nav controls -->
+                        <ul class="carousel-indicators list-inline p-3">
+                            <% if(property.image1){%>
+                            <li class="list-inline-item active">
+                                <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
+                                    <img src="<%=property.image1%>" class="img-fluid">
+                                </a>
+                            </li>
+                            <%}%>
+                            <% if(property.image2){%>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-1" data-slide-to="1" data-target="#myCarousel">
+                                    <img src="<%=property.image2%>" class="img-fluid">
+                                </a>
+                            </li>
+                              <%}%>
+                              <% if(property.image3){%>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-2" data-slide-to="2" data-target="#myCarousel">
+                                    <img src="<%=property.image3%>" class="img-fluid">
+                                </a>
+                            </li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+                <%}else{%>
+                <img src="/img/assets/defaultProperty.jpg" class="w-100 img-fluid" alt="Property Image">
+                <%}%>
+                <!--end -->
+                <div class="card p-2 m-2">
+                    <br>
+                    <p class="h3-responsive"><strong>Details:</strong></p><br>
+                    <p class="h5-responsive">Overview:</p>
+                    <p class="font-weight-normal"><%=property.overview%></p>
+                    <p class="h5-responsive">Description:</p>
+                    <p class="font-weight-normal"><%=property.description%></p>
+                    <p class="h5-responsive">Features:</p>
+                    <!--Features-->
+
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Type of Property
+                            <span class="badge badge-primary badge-pill"><%=property.typeofproperty%></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Furnishing State
+                            <span class="badge badge-primary badge-pill"><%=property.furnishingstate%></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Bedrooms
+                            <span class="badge badge-primary badge-pill"><%=property.numberofrooms%></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Size
+                            <span class="badge badge-primary badge-pill"><%=property.size%> m<sup>2</sup></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Year Built
+                            <span class="badge badge-primary badge-pill"><%=property.yearbuilt%></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Published In
+                            <span class="badge badge-primary badge-pill"><%=property.posted%></span>
+                        </li>
+                    </ul>
+
+                    <!--Features-->
+                </div>
+            </div>
+            <div class="col-lg-4 text-align-center">
+                <h3>€<%= property.price%></h3>
+                <!--Google map-->
+                <div id="map-container-2" class="z-depth-1" style="height: 500px">
+                    <script>
+                        function initMap() {
+                            var map;
+                            var defaultLatLng = {lat: 52.5227797, lng: 13.3880986};
+                            map = new google.maps.Map(document.getElementById('map-container-2'), {
+                                zoom: 8,
+                                center: defaultLatLng
+                            });
+
+                            var geocoder = new google.maps.Geocoder();
+
+                            geocodeAddress(geocoder, map);
+                        }
+                        function geocodeAddress(geocoder, resultsMap) {
+                            var address = "<%=property.plz%>,<%=property.city%>,<%=property.street%>,<%=property.country%>";
+                            geocoder.geocode({'address': address}, function (results, status) {
+                                if (status === 'OK') {
+                                    resultsMap.setCenter(results[0].geometry.location);
+                                    var marker = new google.maps.Marker({
+                                        map: resultsMap,
+                                        position: results[0].geometry.location,
+                                        animation: google.maps.Animation.BOUNCE,
+                                        title: "<%= property.title %>"
+                                    });
+                                } else {
+                                    console.log('Geocode was not successful for the following reason: ' + status);
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+                <br>
+                <% if(userProfile.customer){ %>
+                <p class="h3">Contact Agent</p>
+                <div class="row">
+                    <% if(property.agent_image){ %>
+                    <div class="agentProfile-pic align-center" style="background-image:url('<%=property.agent_image%>')" ></div>
+                    <%}
+                    else {%>
+                    <div class="agentProfile-pic align-center" style="background-image:url('img/assets/pro.png')" ></div>
+                    <% }%>
+                    <div>
+                        <p class=" text-align-center"><br><%=property.agent_name%><br>
+                            <%=property.agent_designation%><br>               <%=property.agent_company%><br>
+                            <%=property.agent_phone%><br>
+                        </p>
+                    </div>
+                </div>
+                <form method="post" action="/message">
+                    <div class="md-form">
+                        <label for="form76">Message</label><br>
+                        <textarea type="text" id="form76" class="md-textarea" name="message"></textarea>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <input type="hidden" name="agentid" value="<%= property.user %>"/>
+                        <input type="checkbox" id="checkbox11">
+                        <label for="checkbox11">I want financing information.</label>
+                    </div>
+                    <input type="submit" id="contactNo" class="btn btn-primary" value="Contact Agent">
+                </form>
+                <% } %>
+            </div>
+            <% }
+            else{ %>
+            <div class="col-lg-8 text-align-center">
+                <p class="h3-responsive"><%=property.title%></p>
+                <p class="h5-responsive"><%=property.plz%>,<%=property.city%><br><%=property.state%>,<%=property.country%></p>
+                <p class="text-muted">For more details please Sign In</p>
+                <!-- carousel start-->
+                <% if(property.image1){%>
+                <div class="slider">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- main slider carousel items -->
+                        <div class="carousel-inner carousel-zoom">
+                            <div class="active item carousel-item" data-slide-number="0">
+                                <img src="<%=property.image1%>" class="w-100 img-fluid">
+                            </div>
+                            <div class="item carousel-item" data-slide-number="1">
+                                <img src="<%=property.image2%>" class="w-100 img-fluid">
+                            </div>
+                            <div class="item carousel-item" data-slide-number="2">
+                                <img src="<%=property.image3%>" class="w-100 img-fluid">
+                            </div>
+                        </div>
+                        <!-- main slider carousel nav controls -->
+                        <ul class="carousel-indicators list-inline p-3">
+                            <li class="list-inline-item active">
+                                <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#myCarousel">
+                                    <img src="<%=property.image1%>" class="img-fluid">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-1" data-slide-to="1" data-target="#myCarousel">
+                                    <img src="<%=property.image2%>" class="img-fluid">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a id="carousel-selector-2" data-slide-to="2" data-target="#myCarousel">
+                                    <img src="<%=property.image3%>" class="img-fluid">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <%}else{%>
+                <img src="/img/assets/defaultProperty.jpg" class="w-100 img-fluid" alt="Property Image">
+                <%}%>
+                <!--end -->
+                <div class="card p-3 m-2">
+                    <div>
+                        <br>
+                        <p class="h3-responsive"><strong>Details:</strong></p><br>
+                        <p class="h5-responsive">Overview:</p>
+                        <p class="font-weight-normal"><%=property.overview%></p>
+                        <p class="h5-responsive">Description:</p>
+                        <p class="font-weight-normal"><%=property.description%></p>
+                        <p class="h5-responsive">Features:</p>
+                        <!--Features-->
+
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Type of Property
+                                <span class="badge badge-primary badge-pill"><%=property.typeofproperty%></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Furnishing State
+                                <span class="badge badge-primary badge-pill"><%=property.furnishingstate%></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Bedrooms
+                                <span class="badge badge-primary badge-pill"><%=property.numberofrooms%></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Size
+                                <span class="badge badge-primary badge-pill"><%=property.size%> m<sup>2</sup></span>
+                            </li>
+                        </ul>
+
+                        <!--Features-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-align-center">
+                <h3><%=property.price%><i class="fa fa-euro" aria-hidden="true"></i></h3>
+            </div>
+            <%} %>
+            <button type="button" id="Back" class="btn btn-default" onclick="window.history.go(-1);" >Back</button>
+        </div>
+        <% include _linkToScripts.html %>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGjYF2fXNDXdXjo4JnFyw9YFmh1Nmi99I&callback=initMap" async defer></script>
+    </body>
+</htm>

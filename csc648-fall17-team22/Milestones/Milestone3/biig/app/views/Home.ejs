@@ -1,0 +1,210 @@
+<!--
+File Name: Home.ejs
+
+Description:
+This is a landing page with options to sign in, sign up, logout and  search for a property. 
+
+Authors:
+Swetaketu Majumder,Akhila, Mahdis-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>BiiG</title>
+        <% include _linkToStylesheets.html %>
+    </head>
+    <body>
+        <% include _header.ejs %>
+        <% include _modalSignIn.html %>
+        <% include _modalSignUp.html %>
+
+        <div  id="intro" class="view">
+            <div class="container-fluid full-bg-img d-flex align-items-center justify-content-center">
+                <div class="row d-flex justify-content-center view hm-black-strong" style="width:90%; height:50%; top:10%">
+                    <div class="col-md-12 text-align-center jumbotron" style="background: rgba(250, 253, 255, 0.808)">
+                        <h2 style="text-align: center">FIND YOUR DREAM PROPERTY WITH BiiG</h2>
+                        <br>
+                        <form method="GET" action="/search">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-lg-11">
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" name="key">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                                                    Advanced
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">
+                                                    SEARCH
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="row"  style="margin-top: 1%">
+                                                <div class="card p-2" style="width:150px">
+                                                    <div class="card-block">
+                                                        <!--Title-->
+                                                        <p class="card-title">No. of Rooms</p>
+                                                        <!--Text-->
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox" name="numberOfRooms" value="1"> 1</label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox" name="numberOfRooms" value="2"> 2</label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <label><input type="checkbox" name="numberOfRooms" value="3"> 3</label>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" name="numberOfRooms" value=">= 4"> >= 4
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card p-2" style="width:150px">
+                                                    <div class="card-block">
+                                                        <p class="card-title">Furnishing State</p>
+                                                        <% if(locals.furnishingStates){
+                                                        for(var i = 0;i < furnishingStates.length;i++) { %>
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" name="furnishingState" value="<%=furnishingStates[i].id%>"><%=furnishingStates[i].value%>
+                                                        </div>
+                                                        <% }
+                                                        }else{ %>
+                                                        <div>
+                                                            No furnishingState
+                                                        </div>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                                <div class="card p-2" style="width:150px">
+                                                    <div class="card-block">
+                                                        <p class="card-title">Size</p>
+                                                        <% if(locals.sizes){
+                                                        for(var i = 0;i < sizes.length;i++) { %>
+                                                        <div class="checkbox">
+                                                            <input type="checkbox" name="size" value="<%=sizes[i].value%>"><%=sizes[i].value%>
+                                                        </div>
+                                                        <% }
+                                                        }else{ %>
+                                                        <div>
+                                                            No size
+                                                        </div>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </form>
+                    <hr class="hr-dark">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="mt-5">
+        <div class="container">
+            <!--Section: Best Features-->
+            <section id="best-features" class="text-center">
+
+                <!-- Heading -->
+                <h2 class="mb-4 font-weight-bold">Our Features</h2>
+
+                <!--Grid row-->
+                <div class="row d-flex justify-content-center mb-4">
+
+                    <!--Grid column-->
+                    <div class="col-md-8">
+
+                        <!-- Description -->
+                        <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi voluptate hic provident nulla repellat
+                            facere esse molestiae ipsa labore porro minima quam quaerat rem, natus repudiandae debitis est
+                            sit pariatur.</p>
+
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-4 mb-5">
+                        <i class="fa fa-camera-retro fa-4x orange-text"></i>
+                        <h4 class="my-4 font-weight-bold">Experience</h4>
+                        <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima
+                            assumenda deleniti hic.</p>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-md-4 mb-1">
+                        <i class="fa fa-heart fa-4x orange-text"></i>
+                        <h4 class="my-4 font-weight-bold">Happiness</h4>
+                        <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima
+                            assumenda deleniti hic.</p>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-md-4 mb-1">
+                        <i class="fa fa-bicycle fa-4x orange-text"></i>
+                        <h4 class="my-4 font-weight-bold">Adventure</h4>
+                        <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima
+                            assumenda deleniti hic.</p>
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid row-->
+
+            </section>
+            <!--Section: Best Features-->
+
+            <hr class="my-5">
+
+            <!--Section: Examples-->
+            <section id="examples">
+
+
+
+            </section>
+            <!--Section: Examples-->
+
+            <hr class="my-5">
+
+            <!--Section: Gallery-->
+            <section id="gallery">
+
+
+
+            </section>
+            <!--Section: Gallery-->
+
+            <hr class="my-5">
+
+            <!--Section: Contact-->
+            <section id="contact">
+
+
+
+            </section>
+            <!--Section: Contact-->
+
+        </div>
+    </main>
+    <!--/.Mask-->
+
+    <% include _linkToScripts.html %>
+</body>
+
+</html>

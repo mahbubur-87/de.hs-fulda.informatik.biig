@@ -1,0 +1,7 @@
+This is one of the backend parts of a real estate application that we did as our master coursework named "Global Distributed Software Development" using NodeJS, Express, JQuery, MySQL. The project was developed using MVC architecture.
+ 
+The file "modelProperty.js" contains a model named "Property" that provides services to controller by communicating with database and then give result to controller. 
+
+Here I wrote a dynamic search function using different filter criterias that generates a dynamic sql based on filter criterias and then fetch data from database, finally send the result to the respective controller. 
+
+The name of the function is "search" with its all sub functions.

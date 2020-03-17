@@ -1,0 +1,35 @@
+<div class="modal fade" id="signupmodal" tabindex="-1" role="form" aria-labelledby="signup" aria-hidden="true">
+  <div class="modal-dialog" role="form">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupmodal">Sign Up for a BiiG Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form text-center" name="signUpForm" method="get" action="/signup">
+            <h4>I am a:</h4>
+          <br/>
+          <div class="form-group">
+            <input name="userType" type="radio" value="customer" checked>
+            <label for="customer">Customer</label>
+            <br/>
+            <small class="text-muted">(If you are looking to buy properties)</small>
+          </div>
+          <br/>
+          <div class="form-group">
+            <input name="userType" type="radio" value="company">
+            <label for="company">Company</label>
+            <br/>
+            <small class="text-muted">(If you represent a company and want to list your properties on our website)</small>
+          </div>
+          <input type="submit" class="btn btn-primary" value="Continue">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

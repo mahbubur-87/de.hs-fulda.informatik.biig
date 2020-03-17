@@ -1,0 +1,47 @@
+<script>
+$(document).ready( function() {
+  function readURL(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $('.profile-pic').css('background-image', 'url('+ e.target.result+')');
+          }
+
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  $("#imgInp").change(function(){
+      readURL(this);
+      var userId=$("#myUserId").html();
+      var restUrl="/uploaddp";
+      var form = $('#frmUploader')[0];
+      var data = new FormData(form);
+      data.append("user",userId);
+      $.ajax({
+          type     : "POST",
+          enctype: 'multipart/form-data',
+          processData: false,
+          contentType: false,
+          cache    : false,
+          url      : restUrl,
+          data     : data,
+          success  : function(data) {
+            var newFileName=data;
+            var filePath="/img/users/"+newFileName;
+            var restUrl="/uploaddptodb";
+            $.ajax({
+                type     : "POST",
+                cache    : false,
+                url      : restUrl,
+                data     : {id: userId, path:filePath},
+                success  : function(data) {
+                  toastr.info("Image Successfully Updated");
+                }
+            });
+          }
+      });
+  });
+});
+</script>

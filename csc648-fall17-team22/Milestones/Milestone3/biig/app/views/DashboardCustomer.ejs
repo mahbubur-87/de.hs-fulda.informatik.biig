@@ -1,0 +1,427 @@
+<!--
+DashboardCustomer.ejs
+
+Description:
+This is Dashboard for Customer
+Tabs:
+  -My profile
+      -Manage Profile Details
+  -Favorite
+      -View all Favorites
+      -Remove from fav
+  -Messages
+     -Displays Messages
+  -Comparison
+
+Authors:Akhila,Mahdis,Aleks,Rohan,Swetaketu,Mahbubur-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>BiiG</title>
+  <% include _linkToStylesheets.html %>
+</head>
+<body>
+  <% include _header.ejs %>
+  <% include _modalSignIn.html %>
+  <% include _modalSignUp.html %>
+  <% include modalMessage.ejs %>
+  <br><br><br><br>
+  <div class="container-fluid align-items-center justify-content-center">
+    <div class="row p-2 align-items-center justify-content-center">
+      <div class="col-sm-8">
+        <form method="GET" action="/search">
+            <div class="input-group add-on">
+              <% if(locals.key){%>
+              <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key" value="<%=key%>">
+              <%}
+              else{%>
+                <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key">
+              <%}%>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span> Search
+                </button>
+            </div>
+          </div>
+        </form>
+    </div>
+  </div>
+   <div class="row p-3 justify-content-center">
+     <div class="col-md-2 col-sm-2">
+       <div class="card">
+         <ul class="nav flex-column">
+           <li class="nav-item">
+             <a class="nav-link active" href="#a" data-toggle="tab"><h6>My Profile</h6></a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#b" data-toggle="tab"><h6>Favorites</h6></a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="#c" data-toggle="tab"><h6>Comparison</h6></a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link " href="#d" data-toggle="tab"><h6>Messages</h6></a>
+           </li>
+         </ul>
+       </div>
+    </div>
+    <div class="col-md-7 col-sm-7">
+      <div class="tab-content">
+        <div class="tab-pane active" id="a">
+          <% if(locals.userProfile){%>
+        <!-- begin form for edit-->
+          <form method="POST" action="/editcustomer" id="editForm" style="display:none">
+            <input type="hidden" name="custid" value="<%= userProfile.customerid %>">
+            <div class="card p-4">
+              <div class="form-group">
+                <label for="fname">First Name:</label>
+                <input type="text" class="form-control" id="fname" name="firstname" placeholder="Enter first name" value="<%=userProfile.firstname%>" required>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name:</label>
+                <input type="text" class="form-control" id="lname" name="lastname" placeholder="Enter last name" value="<%=userProfile.lastname%>" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<%=userProfile.email%>" required>
+              </div>
+              <div class="form-group">
+                <label for="phno">Phone Number:</label>
+                <input type="tel" class="form-control" id="phno" name="phone" placeholder="Enter Phone number" value="<%=userProfile.phonenumber%>" required>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-3">
+                    Address
+                  </div>
+                  <div class="col-md-9">
+                      <div class="row">
+                          <div class="col-md-8">
+                            <input id="streetname" type="text" name="streetname" title="Street Name" placeholder="Street Name" class="form-control" value="<%=userProfile.street%>" required/>
+                          </div>
+                          <div class="col-md-4">
+                              <input id="housenumber" type="text" name="housenumber" title="House Number" placeholder="House Number" class="form-control"  value="<%=userProfile.housenumber%>" required/>
+                          </div>
+                        </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <select id="country" name="country" class="form-control" required></select>
+                        </div>
+                        <div class="col-md-6">
+                          <select name="state" id="state" class="form-control"><option value="0" disabled selected required>Select State</option></select>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6">
+                              <input id="plz" type="number" name="plz" title="PLZ" placeholder="PLZ" class="form-control" value="<%=userProfile.plz%>" required/>
+                          </div>
+                          <div class="col-md-6">
+                            <input id="city" type="text" name="city" title="City" placeholder="City" class="form-control" value="<%=userProfile.city%>" onfocus="loadCity()" required/>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+         </form>
+         <!-- end form for edit-->
+
+          <div class="card p-4" id="viewForm">
+            <div class="card-block">
+              <div class="row">
+                <div class="col-md-4">
+                  <h6>First Name</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.firstname%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Last Name</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.lastname%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Email</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.email%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Address</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.street%> <%=userProfile.housenumber%>, <%=userProfile.plz%>, <%=userProfile.city%>, <%=userProfile.state%>, <%=userProfile.country%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Phone Number</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.phonenumber%></span>
+                </div>
+             </div>
+             <hr>
+            <% if(userProfile.country && userProfile.state){ %>
+              <button type="button" class="btn btn-primary" onclick="showedit('<%=userProfile.country%>','<%=userProfile.state%>')">Edit</button>
+            <% }
+            else{%>
+              <button type="button" class="btn btn-primary" onclick="showedit('undefined','undefined')">Edit</button>
+              <%}%>
+        </div>
+        </div>
+        <% } %>
+        </div>
+        <div class="tab-pane" id="b">
+            <% if(locals.properties && 0 < properties.length){
+                for(var i = 0;i < properties.length;i++) { %>
+                <div class="card p-3 m-2">
+                  <div class="row card-block">
+                    <div class="propertyFav col-sm-8 col-md-8">
+                      <div class="row">
+                        <div class="col-sm-8 col-md-8">
+                            <a class="favButton" onclick="RemoveFav(<%=properties[i].id%>,this)">
+                              <i class="heart fa fa-heart"></i>
+                            </a>
+                          </div>
+
+                      </div>
+                        <a href="/property/?id=<%=properties[i].id%>"><h3 class="card-title"><%=properties[i].title%></h3></a>
+                          <h5>€<%= properties[i].price%></h5>
+                          <div class="card-text"><%=properties[i].street%><br><%=properties[i].plz%>,<%=properties[i].city%></div>
+                        <div class="card-text">Year Built: <%=properties[i].yearbuilt%><br>Published In: <%=properties[i].posted%></div>
+                        </div>
+                        <div class="propertyImage col-sm-4 col-md-4">
+                          <img src="<%=properties[i].image1%>" class="img-thumbnail" alt="Property Image">
+                        </div>
+                  </div>
+                </div>
+                  <% }
+                }else{ %>
+                  <div class="card p-3 m-2">
+                      No favorite Property added
+                  </div>
+            <% } %>
+
+        </div>
+        <div class="tab-pane" id="c">
+          <% if(locals.properties && 0 < properties.length){ %>
+            <div class="row">
+            <%for(var i = 0;i < properties.length;i++) { %>
+              <div class="col-4">
+                <div class="card card-cascade wider m-3" style="height:650px">
+                  <div class="view overlay hm-white-slight">
+                    <img src="<%=properties[i].image1%>" class="img-fluid">
+                    <a href="#">
+                      <div class="mask"></div>
+                    </a>
+                  </div>
+                  <div class="card-body text-center">
+                    <h4 class="card-title"><strong><%=properties[i].title%></strong></h4>
+                    <h5><%=properties[i].housenumber%>,<%=properties[i].street%>,<%=properties[i].city%>,<%=properties[i].country%></h5>
+                    <h5>€<%= properties[i].price%></h5>
+
+                    <h5><span class="badge cyan"><%=properties[i].typeofproperty%></span></h5>
+
+                    <h5><span class="badge cyan"><%=properties[i].state%></span></h5>
+
+                    <p class="card-text">
+
+                      <ul class="list-group">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Price
+                            <span class="badge badge-primary cyan">€<%=properties[i].price%></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            yearbuilt
+                            <span class="badge badge-primary cyan"><%=properties[i].yearbuilt%></span>
+                        </li>
+
+                      </ul>
+
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <% }%>
+              </div>
+              <%}else{ %>
+                <div class="card p-3 m-2">
+                  No property added for comparison
+                </div>
+                <% } %>
+              </div>
+
+
+            <div class="tab-pane" id="d">
+            <div class="row">
+              <div class="col-4">
+
+                <div class="list-group" id="myList" role="tablist">
+                  <ul class="list-group" id="mylist">
+                    <%if(locals.Messages){ for(var i = 0;i < Messages.length;i++) { %>
+                      <li class="list-group-item" ><a href="#" onclick="Loadmessages(<%= Messages[i].fromuser %>, <%= Messages[i].touser %>,this)" role="tab"><h6><%=Messages[i].firstname%> <%=Messages[i].lastname%></h6></a></li>
+                      <% }} %>
+                </div>
+              </div>
+
+              <div class="col-8 messageBox" style="display:none">
+                <div class="tab-content messageContent">
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <form action="/reply" method="POST" enctype="multipart/form-data" id="form_id">
+                      <div class="form-group pt-5">
+                        <%if(locals.Messages && Messages.length > 0){ %>
+                        <input type="hidden" name="euser" value="<%= Messages[0].euser %>">
+                         <input type="hidden" name="cuser" value="<%= Messages[0].cuser %>">
+                         <input type="text" name="reply" class="form-control" id="msgSend" tabindex="4" placeholder="Write your message" required>
+                         <%} %>
+                       </div>
+                       <input type="submit" name="submit" class="btn btn-primary btn-block" tabindex="5" value="Send">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    </div>
+    <div class="col-md-2 col-sm-2">
+      <div class="card testimonial-card align-items-center">
+          <% if(locals.userProfile){%>
+            <a href="#" class="profile-pic m-2">
+                <% if(userProfile.profilepicture){ %>
+              <div class="profile-pic"  style="background-image:url('<%=userProfile.profilepicture%>')" >
+              <%}
+              else {%>
+                <div class="profile-pic"  style="background-image:url('/img/assets/avatar.png')" >
+              <% }%>
+                  <div class="myUpload pt-5" style="display:none">
+                    <form id="frmUploader" enctype="multipart/form-data" action="/uploaddp" method="post">
+                      <label id="myUserId" hidden><%=userProfile.customerid%></label>
+                      <label id="myUserType" hidden>customer</label>
+                      <span>
+                      <span class="btn btn-file">
+                          <input type="file" id="imgInp" name="fileUser" hidden>
+                          <label for="imgInp">Browse</label>
+                      </span>
+                    </span>
+                  </form>
+                </div>
+              </div>
+            </a>
+            <div class="card-body">
+              <h6><%=userProfile.firstname%></h6>
+              <h6><%=userProfile.email%><h6>
+            </div>
+
+          <% } %>
+          </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+    <% include _linkToScripts.html %>
+    <% include UserProfileImage.html%>
+    <script type="text/javascript" src= "js/countries.js"></script>
+    <script>
+    //populates country and states drop down
+      populateCountries("country", "state");
+      //fav icon
+      $(".heart.fa").click(function() {
+        $(this).toggleClass("fa-heart fa-heart-o");
+      });
+
+      //Displays user edit form
+      function showedit(country,state){
+        $("#viewForm").hide();
+        $("#editForm").show();
+        if(country!="undefined")
+        {
+          $("#country").val(country);
+          populateStates("country", "state");
+        }
+        if(state!="undefined")
+          $("#state").val(state);
+      }
+        //delete fav property
+      function RemoveFav(id,element){
+            $(element).parent().closest('.card').remove();
+            var restUrl="/customer-favorite/remove/?id="+id;
+            $.ajax({
+                type     : "GET",
+                cache    : false,
+                url      : restUrl,
+                data     : {proID: id},
+                success  : function(data) {
+                  console.log("success");
+                }
+            });
+      }
+
+    //Loading all Messages to the logged in users
+    function Loadmessages(fromuser, touser, element)
+    {
+      $(".messageBox").show();
+      $.ajax({
+              type     : "POST",
+              cache    : false,
+              url      : "/getmsg",
+              data     : {fromuser: fromuser,touser: touser},
+            success  : function(data) {
+              var htmlMessages="";
+              $.each(data, function (index, element) {
+                if(element.touser==touser && element.fromuser==fromuser )
+                    htmlMessages+="<div class='row'><div class='col-md-6 tab-pane active sendMessage m-2'>"+element.messages+"</div><div class='col-md-4'></div></div>";
+                else if(element.touser==fromuser && element.fromuser==touser){
+                    htmlMessages+="<div class='row'><div class='col-md-4'></div><div class='col-md-6 tab-pane active receiveMessage m-2'>"+element.messages+"</div></div>";
+                }
+              });
+                $(".messageContent").html(htmlMessages);
+            }
+        });
+    }
+      //Loading selected conversations the logged in users
+
+    $('#form_id').on('submit',function(e){
+      e.preventDefault();
+      $.ajax({
+          type     : "POST",
+          cache    : false,
+          url      : $(this).attr('action'),
+          data     : $(this).serialize(),
+          success  : function(data) {
+            var htmlMsg="<div class='row'><div class='col-md-4'></div><div class='col-md-6 tab-pane active receiveMessage m-2'>"+$("#msgSend").val()+"</div></div>";
+              $(".messageContent").append(htmlMsg);
+              $("#msgSend").val("");
+          }
+      });
+
+    });
+
+    </script>
+</body>
+</html>

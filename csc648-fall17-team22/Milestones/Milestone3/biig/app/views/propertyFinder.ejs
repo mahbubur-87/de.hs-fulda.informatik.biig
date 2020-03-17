@@ -1,0 +1,474 @@
+<!--
+PropertyFinder.ejs
+
+Description:
+This is Property Finder page
+ with search,filter
+
+Authors:Akhila,Mahdis,Aleks,Mahbubur-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>BiiG</title>
+  <% include _linkToStylesheets.html %>
+</head>
+<body>
+  <% include _header.ejs %>
+  <% include _modalSignIn.html %>
+  <% include _modalSignUp.html %>
+      <div class="divPropertyFinder">
+        <br><br><br><br>
+        <div class="container-fluid justify-content-center align-items-center ">
+            <form id="frmPropertySearch" method="GET" action="/search">
+            <div class="row p-2 align-items-center justify-content-center">
+              <div class="col-sm-8">
+                    <div class="input-group add-on">
+                      <% if(locals.key){%>
+                      <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key" value="<%=key%>">
+                      <%}
+                      else{%>
+                        <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key">
+                      <%}%>
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('frmPropertySearch').submit()">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                        </button>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="row p-3 justify-content-end">
+            <div class="col-sm-3 col-md-2" id="divTotal">
+              <% if(locals.properties){%>
+              <br><b>Total <%=properties.length%> properties found</b>
+              <%}%>
+            </div>
+            <div class="col-sm-3 col-md-4 pl-5">
+              <div class="dropdown show">
+<!--                <div class="dropdown-menu" aria-labelledby="dropdownSortMenu">-->
+                    <select name="sort" onchange="document.getElementById('frmPropertySearch').submit()" class="btn btn-default dropdown-toggle">
+                        <option value="" disabled selected>Sort By</option>
+                        <% if (locals.sortOptions) {
+                          for (var i = 0; i < sortOptions.length; i++) {
+                              if (sortOptions[i].value == sort) {
+                              %>
+                        <option value="<%=  sortOptions[i].value %>" selected="selected"><%= sortOptions[i].value %></option>
+                        <% continue; } %>
+
+                        <option value="<%=  sortOptions[i].value %>"><%= sortOptions[i].value %></option>
+
+                        <% }
+                          } %>
+                    </select>
+<!--                </div>-->
+            </div>
+            </div>
+          </div>
+          <div class="row p-3 justify-content-center">
+            <div class="col-sm-3 col-md-2">
+              <div id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingOne">
+                    <h6 class="mb-0">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Location
+                      </a>
+                    </h6>
+                  </div>
+
+                  <div id="collapseOne" class="collapse <%= 0 < location.length ? 'show' : ''%>" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-block">
+                      <div class="checkboxPlaces m-3">
+                        <% if(locals.locations){
+                            for(var i = 0;i < locations.length;i++) { %>
+                                <div class="checkbox">
+                                    <%
+                                if ((typeof location === 'string' && location == locations[i].city) || (typeof location === 'object' && location.join(',').includes(locations[i].city))) { %>
+                                    <input type="checkbox" name="location" value="<%=locations[i].city%>" checked="checked"><%=locations[i].city%>
+                                    </div>
+                                    <% continue;                                               } %>
+
+                                  <input type="checkbox" name="location" value="<%=locations[i].city%>"><%=locations[i].city%>
+                                </div>
+                              <% }
+                            }else{ %>
+                                <div>
+                                  No places
+                                </div>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingSize">
+                    <h6 class="mb-0">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseSize" aria-expanded="false" aria-controls="collapseSize">
+                        Size
+                      </a>
+                    </h6>
+                  </div>
+
+                  <div id="collapseSize" class="collapse <%= 0 < size.length ? 'show' : ''%>" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-block">
+                      <div class="checkboxSize m-3">
+                        <% if(locals.sizes){
+                            for(var i = 0;i < sizes.length;i++) { %>
+                                <div class="checkbox">
+                        <%
+                                if ((typeof size === 'string' && size == sizes[i].value) || (typeof size === 'object' && size.join(',').includes(sizes[i].value))) { %>
+                                    <input type="checkbox" class="propSize" name="size" value="<%=sizes[i].value%>" checked="checked"><%=sizes[i].value%>
+                                    </div>
+                                    <% continue;                                               } %>
+
+
+                                  <input type="checkbox" class="propSize" name="size" value="<%=sizes[i].value%>"><%=sizes[i].value%>
+                                </div>
+                              <% }
+                            }else{ %>
+                                <div>
+                                  No size
+                                </div>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingThree">
+                    <h6 class="mb-0">
+                      <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      Furnishing State
+                      </a>
+                    </h6>
+                  </div>
+                  <div id="collapseThree" class="collapse <%= 0 < furnishingState.length ? 'show' : ''%>" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="card-block">
+                      <div class="checkboxFurnished m-3">
+                        <% if(locals.furnishingStates){
+                            for(var i = 0;i < furnishingStates.length;i++) { %>
+                                <div class="checkbox">
+                        <%
+                                if ((typeof furnishingState === 'string' && furnishingState == furnishingStates[i].id) || (typeof furnishingState === 'object' && furnishingState.join(',').includes(furnishingStates[i].id))) { %>
+                                    <input type="checkbox" name="furnishingState" value="<%=furnishingStates[i].id%>" checked="checked"><%=furnishingStates[i].value%>
+                                    </div>
+                                    <% continue;                                               } %>
+
+                                  <input type="checkbox" name="furnishingState" value="<%=furnishingStates[i].id%>"><%=furnishingStates[i].value%>
+                                </div>
+                              <% }
+                            }else{ %>
+                                <div>
+                                  No furnishingState
+                                </div>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" role="tab" id="headingNo">
+                    <h6 class="mb-0">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseNo" aria-expanded="false" aria-controls="collapseOne">
+                        Number of Rooms
+                      </a>
+                    </h6>
+                  </div>
+
+                  <div id="collapseNo" class="collapse <%= 0 < numberOfRooms.length ? 'show' : ''%>" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-block">
+                      <div class="checkboxNo m-3">
+                        <div class="checkbox">
+                        <%
+                                if ((typeof numberOfRooms === 'string' && numberOfRooms == '1') || (typeof numberOfRooms === 'object' && numberOfRooms.join(',').includes('1'))) { %>
+                                    <input type="checkbox" name="numberOfRooms" value="1" checked="checked"> 1 <% } else { %>
+                          <input type="checkbox" name="numberOfRooms" value="1"> 1
+                            <% } %>
+                        </div>
+                        <div class="checkbox">
+                            <%
+                                if ((typeof numberOfRooms === 'string' && numberOfRooms == '2') || (typeof numberOfRooms === 'object' && numberOfRooms.join(',').includes('2'))) { %>
+                                    <input type="checkbox" name="numberOfRooms" value="2" checked="checked"> 2
+                            <% } else { %>
+                          <input type="checkbox" name="numberOfRooms" value="2"> 2
+                            <% } %>
+                        </div>
+                        <div class="checkbox">
+                            <%
+                                if ((typeof numberOfRooms === 'string' && numberOfRooms == '3') || (typeof numberOfRooms === 'object' && numberOfRooms.join(',').includes('3'))) { %>
+                                    <input type="checkbox" name="numberOfRooms" value="3" checked="checked"> 3
+                            <% } else { %>
+                          <input type="checkbox" name="numberOfRooms" value="3"> 3
+                            <% } %>
+                        </div>
+                        <div
+                             class="checkbox">
+                            <%
+
+                                if ((typeof numberOfRooms === 'string' && numberOfRooms == ">= 4") || (typeof numberOfRooms === 'object' && numberOfRooms.join(',').includes(">= 4"))) { %>
+                                    <input type="checkbox" name="numberOfRooms" value=">= 4" checked="checked"> >= 4
+                                                         <% } else { %>
+
+                          <input type="checkbox" name="numberOfRooms" value=">= 4"> >= 4
+                            <% } %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                  </div>
+                  </div>
+
+            <div class="col-sm-8 col-md-6">
+              <div class="divProperties">
+                <% if(locals.properties){
+                    for(var i = 0;i < properties.length;i++) { %>
+                    <div class="card p-3 m-2">
+                      <div class="row card-block">
+                        <div class="propertySummary col-sm-8 col-md-8">
+                          <% if(locals.userProfile){%>
+                              <% if(userProfile.customer){ %>
+                                  <% if (1 == properties[i].customer_favorite) { %>
+                                      <a class="favButton" onclick="removeFromFavorite(<%=properties[i].id%>,this)" style="float: left;">
+                                          <i class="heart fa fa-heart"></i>&nbsp;&nbsp;
+                                      </a>
+                                  <% } else{ %>
+                                      <a class="favButton" onclick="addToFavorite(<%=properties[i].id%>,this)" style="float: left;">
+                                          <i class="heart fa fa-heart-o"></i>&nbsp;&nbsp;
+                                      </a>
+                                  <% } %>
+                              <%}%>
+                            <%}%>
+                          <a href="/property/?id=<%=properties[i].id%>"><h3 class="card-title"><%=properties[i].title%></h3></a>
+                          <h5><b>€<%= properties[i].price%></b>&nbsp;&nbsp;&nbsp;<%= properties[i].size%>m<sup>2</sup>&nbsp;&nbsp;&nbsp;<%= properties[i].numberofrooms%>&nbsp;Rooms</h5>
+                          <% if(locals.userProfile) { %>
+                              <div class="card-text"><%=properties[i].housenumber%>,<%=properties[i].street%>,<%=properties[i].plz%>,<%=properties[i].city%><br><%=properties[i].state%>,<%=properties[i].country%></div>
+                          <% } else{%>
+                              <div class="card-text"><%=properties[i].plz%>,<%=properties[i].city%>,<%=properties[i].state%>,<%=properties[i].country%></div>
+                          <% }%>
+                        <div class="card-text">Year Built: <%=properties[i].yearbuilt%><br>Published In: <%=properties[i].posted%></div>
+                        </div>
+                        <div class="propertyImage col-sm-4 col-md-4">
+                          <% if(properties[i].image1){%>
+                          <img src="<%=properties[i].image1%>" class="img-fluid" alt="Property Image">
+                          <%}else{%>
+                            <img src="/img/assets/defaultProperty.jpg" class="img-fluid" alt="Property Image">
+                          <%}%>
+                        </div>
+                      </div>
+                    </div>
+                      <% }
+                    }else{ %>
+                        <div class="card p-3 m-2">
+                          No Property
+                        </div>
+                <% } %>
+              </div>
+            </div>
+            <div class="col-sm-3 col-md-3">
+                <blockquote class="blockquote">
+                  Recommendations
+                </blockquote>
+
+              <div class="divPropertiesRecomm">
+                <% if(locals.reccProperties){
+                    for(var i = 0;i < reccProperties.length;i++) { %>
+                    <div class="card p-3 m-2 bg-light">
+                      <% if(reccProperties[i].image1){%>
+                      <img src="<%=reccProperties[i].image1%>" class="card-img-top" alt="Property Image">
+                      <%}else{%>
+                        <img src="/img/assets/defaultProperty.jpg" class="card-img-top" alt="Property Image">
+                      <%}%>
+                      <div class="card-block">
+                        <div class="propertySummary">
+                          <% if(locals.userProfile){%>
+                              <% if(userProfile.customer){ %>
+                                  <% if (1 == reccProperties[i].customer_favorite) { %>
+                                      <a class="favButton" onclick="removeFromFavorite(<%=reccProperties[i].id%>,this)" style="float: left;">
+                                          <i class="heart fa fa-heart"></i>&nbsp;&nbsp;
+                                      </a>
+                                  <% } else{ %>
+                                      <a class="favButton" onclick="addToFavorite(<%=reccProperties[i].id%>,this)" style="float: left;">
+                                          <i class="heart fa fa-heart-o"></i>&nbsp;&nbsp;
+                                      </a>
+                                  <% } %>
+                              <%}%>
+                            <%}%>
+                          <a href="/property/?id=<%=reccProperties[i].id%>"><h4 class="card-title"><%=reccProperties[i].title%></h4></a>
+                            <h6><b>€<%= reccProperties[i].price%></b>&nbsp;&nbsp;&nbsp;<%= reccProperties[i].size%>m<sup>2</sup>&nbsp;&nbsp;&nbsp;<%= reccProperties[i].numberofrooms%>&nbsp;Rooms</h6>
+                          <% if(locals.userProfile) { %>
+                              <div class="card-text"><%=reccProperties[i].housenumber%>,<%=reccProperties[i].street%>,<%=reccProperties[i].plz%>,<%=reccProperties[i].city%><br><%=reccProperties[i].state%>,<%=reccProperties[i].country%></div>
+                          <% } else{%>
+                              <div class="card-text"><%=reccProperties[i].plz%>,<%=reccProperties[i].city%>,<%=reccProperties[i].state%>,<%=reccProperties[i].country%></div>
+                          <% }%>
+                        <div class="card-text">Year Built: <%=reccProperties[i].yearbuilt%><br>Published In: <%=reccProperties[i].posted%></div>
+                        </div>
+                      </div>
+                    </div>
+                      <% }
+                    } %>
+              </div>
+            </div>
+
+                </div>
+
+            </form>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+        <!--/.Mask-->
+
+  <% include _linkToScripts.html %>
+  <script language="JavaScript" type="text/javascript">
+      //add to customer favorite code
+      function addToFavorite(id,element){
+          var restUrl = "/customer-favorite/?id=" + id;
+
+          $.ajax({
+              type: "GET",
+              cache: false,
+              url: restUrl,
+              success  : function(data) {
+                  $(element).attr("onclick", "removeFromFavorite(".concat(id, ", this)"));
+                  $(element.children[0]).attr("class", "heart fa fa-heart");
+                  var htmlPropertiesRecomm = "";
+                  var reccProperties=data.reccProperties;
+                  var userProfile = data.userProfile;
+                  $.each(reccProperties, function (index, element) {
+                    htmlPropertiesRecomm += "<div class='card p-3 m-2'>";
+                    if(element.image1){
+                        htmlPropertiesRecomm += "<img src='" + element.image1 + "' class='card-img-top' alt='Property Image'>";
+                      }
+                      else {
+                        htmlPropertiesRecomm += "<img src='/img/assets/defaultProperty.jpg' class='card-img-top' alt='Property Image'>";
+                      }
+                    htmlPropertiesRecomm +=   "<div class='card-block'>";
+                    htmlPropertiesRecomm += "<div class='propertySummary'>";
+                    htmlPropertiesRecomm = htmlPropertiesRecomm.concat("<a class='favButton' onclick='addToFavorite(", element.id, ",this)' style='float: left;'><i class='heart fa fa-heart-o'></i></a>");
+                      htmlPropertiesRecomm +="<a href='/property/?id="+element.id+"'><h4 class='card-title'>"+element.title+"</h4></a>";
+                      htmlPropertiesRecomm +="<h6><b>€"+element.price+"</b>&nbsp;&nbsp;&nbsp;"+element.size+"m<sup>2</sup>&nbsp;&nbsp;&nbsp;"+element.numberofrooms+"&nbsp;Rooms</h6>";
+                      if(userProfile){
+                        htmlPropertiesRecomm += "<div class='card-text'>" + element.housenumber + "," + element.street + "<br>" + element.plz + ";" + element.city + "<br>" + element.state + "," + element.country + "</div>";
+                      }
+                      else{
+                        htmlPropertiesRecomm += "<div class='card-text'>" + element.plz + "," + element.city + "<br>" + element.state + "," + element.country + "</div>";
+                      }
+
+                      htmlPropertiesRecomm +="<div class='card-text'>Year Built:"+ element.yearbuilt+"<br>Published In:"+ element.posted+"</div></div>";
+
+
+                      htmlPropertiesRecomm+=  "</div></div>"
+                  });
+                  $('.divPropertiesRecomm').html(htmlPropertiesRecomm);
+              }
+            });
+          }
+
+      //remove from customer favorite code
+      function removeFromFavorite(id,element){
+          var restUrl = "/customer-favorite/remove/?id=" + id;
+
+          $.ajax({
+              type: "GET",
+              cache: false,
+              url: restUrl,
+              success  : function(data) {
+                  $(element).attr("onclick", "addToFavorite(".concat(id, ", this)"));
+                  $(element.children[0]).attr("class", "heart fa fa-heart-o");
+                  var htmlPropertiesRecomm = "";
+                  var reccProperties=data.reccProperties;
+                  var userProfile = data.userProfile;
+                  $.each(reccProperties, function (index, element) {
+                    htmlPropertiesRecomm += "<div class='card p-3 m-2'>";
+                    if(element.image1){
+                        htmlPropertiesRecomm += "<img src='" + element.image1 + "' class='card-img-top' alt='Property Image'>";
+                      }
+                      else {
+                        htmlPropertiesRecomm += "<img src='/img/assets/defaultProperty.jpg' class='card-img-top' alt='Property Image'>";
+                      }
+                      htmlPropertiesRecomm +=   "<div class='card-block'>";
+                      htmlPropertiesRecomm += "<div class='propertySummary'>";
+                      htmlPropertiesRecomm = htmlPropertiesRecomm.concat("<a class='favButton' onclick='addToFavorite(", element.id, ",this)'style='float: left;'><i class='heart fa fa-heart-o'></i></a>");
+                      htmlPropertiesRecomm +="<a href='/property/?id="+element.id+"'><h4 class='card-title'>"+element.title+"</h4></a>";
+                      htmlPropertiesRecomm +="<h6><b>€"+element.price+"</b>&nbsp;&nbsp;&nbsp;"+element.size+"m<sup>2</sup>&nbsp;&nbsp;&nbsp;"+element.numberofrooms+"&nbsp;Rooms</h6>";
+                      if(userProfile){
+                        htmlPropertiesRecomm += "<div class='card-text'>" + element.housenumber + "," + element.street + "<br>" + element.plz + ";" + element.city + "<br>" + element.state + "," + element.country + "</div>";
+                      }
+                      else{
+                        htmlPropertiesRecomm += "<div class='card-text'>" + element.plz + "," + element.city + "<br>" + element.state + "," + element.country + "</div>";
+                      }
+
+                      htmlPropertiesRecomm +="<div class='card-text'>Year Built:"+ element.yearbuilt+"<br>Published In:"+ element.posted+"</div></div>";
+
+
+                      htmlPropertiesRecomm+=  "</div></div>"
+                  });
+                  $('.divPropertiesRecomm').html(htmlPropertiesRecomm);
+              }
+            });
+          }
+              //To filter
+          $('#frmPropertySearch :checkbox').change(function() {
+              var restUrl = "/searchfinder";
+              $.ajax({
+                  type: "GET",
+                  cache: false,
+                  url: restUrl,
+                  data: $('#frmPropertySearch').serialize(),
+                  success: function (data) {
+                      var htmlProperties = "";
+                      $('#divTotal').html("<br><b>Total " + data.properties.length + " properties found</b>");
+                      var userProfile = data.userProfile;
+                      $.each(data.properties, function (index, element) {
+                          //forming property card pls verify field names
+                            htmlProperties += "<div class='card p-3 m-2'><div class='row card-block'>";
+                            htmlProperties += "<div class='propertySummary col-sm-8 col-md-8'>";
+                            if (userProfile) {
+                                if (userProfile.customer) {
+                                    if (0 == element.customer_favorite) {
+                                        htmlProperties = htmlProperties.concat("<a class='favButton' onclick='addToFavorite(", element.id, ",this)' style='float: left;'><i class='heart fa fa-heart-o'></i></a>");
+                                    } else {
+                                        htmlProperties = htmlProperties.concat("<a class='favButton' onclick='removeFromFavorite(", element.id, ",this)' style='float: left;'><i class='heart fa fa-heart'></i></a>");
+                                    }
+                                }
+                              }
+                              htmlProperties +="<a href='/property/?id="+element.id+"'><h3 class='card-title'>"+element.title+"</h3></a>";
+                              htmlProperties +="<h5><b>€"+element.price+"</b>&nbsp;&nbsp;&nbsp;"+element.size+"m<sup>2</sup>&nbsp;&nbsp;&nbsp;"+element.numberofrooms+"&nbsp;Rooms</h5>";
+                              if(userProfile){
+                                htmlProperties += "<div class='card-text'>" + element.housenumber + "," + element.street + "<br>" + element.plz + ";" + element.city + "<br>" + element.state + "," + element.country + "</div>";
+                              }
+                              else{
+                                htmlProperties += "<div class='card-text'>" + element.plz + "," + element.city + "<br>" + element.state + "," + element.country + "</div>";
+                              }
+
+                              htmlProperties +="<div class='card-text'>Year Built:"+ element.yearbuilt+"<br>Published In:"+ element.posted+"</div></div>";
+                              htmlProperties +="<div class='propertyImage col-sm-4 col-md-4'>";
+                              if(element.image1){
+                                  htmlProperties += "<img src='" + element.image1 + "' class='img-fluid' alt='Property Image'></div>";
+                                }
+                                else {
+                                  htmlProperties += "<img src='/img/assets/defaultProperty.jpg' class='img-fluid' alt='Property Image'></div>";
+                                }
+                              htmlProperties+=  "</div></div>"
+                            });
+
+
+                            $('.divProperties').html(htmlProperties);
+
+
+                    }
+                });
+            });
+
+        </script>
+      </body>
+
+      </html>

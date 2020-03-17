@@ -1,0 +1,1201 @@
+<!--
+DashboardListingAgent.ejs
+
+Description:
+This is Dashboard for ListingAgent Dashboard
+Tabs:
+  -My profile
+      -Manage Profile Details
+  -Properties
+      -Manage Properties
+  -Messages
+      -Display Messages
+      -Messaging
+  -Company Sales
+     -Displays Company Sales
+
+Authors:Akhila,Mahdis,Rohan,Swetaketu,Mahbubur-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>BiiG</title>
+  <% include _linkToStylesheets.html %>
+</head>
+<body onload="loadDashboard(<%= userProfile.employee %>)">
+  <% include _header.ejs %>
+  <% include _modalSignIn.html %>
+  <% include _modalSignUp.html %>
+  <% include modalMessage.ejs %>
+  <% include _modalPriceRange.html %>
+  <br><br><br><br>
+  <div class="container-fluid align-items-center justify-content-center">
+   <div class="row p-3 justify-content-center">
+     <div class="col-sm-8">
+       <form method="GET" action="/search">
+           <div class="input-group add-on">
+             <% if(locals.key){%>
+             <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key" value="<%=key%>">
+             <%}
+             else{%>
+               <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key">
+             <%}%>
+             <div class="input-group-btn">
+               <button type="submit" class="btn btn-primary">
+                   <span class="glyphicon glyphicon-search"></span> Search
+               </button>
+           </div>
+         </div>
+       </form>
+   </div>
+   </div>
+   <div class="row p-3 justify-content-center">
+     <div class="col-md-2 col-sm-2">
+       <div class="card">
+         <ul class="nav flex-column">
+            <li class="nav-item">
+            <a class="nav-link active" href="#dashboard" data-toggle="tab"><h6>Dashboard</h6></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#a" data-toggle="tab"><h6>My Profile</h6></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#b" data-toggle="tab"><h6>Properties</h6></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#c" data-toggle="tab"><h6>Sales</h6></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="#d" data-toggle="tab"><h6>Messages</h6></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-7 col-sm-7">
+      <div class="tab-content">
+        <div class="tab-pane active" id="dashboard">
+            <div class="row">
+                <div class="col-md-4 col-sm-4">
+                    <input type="number" min="4" max="4" maxlength="4" placeholder="<%= new Date().getFullYear() %>" id="salesYear">
+                </div>
+                <div class="col-md-4 col-sm-4">
+                <input type="button" onclick="loadMonthlySalesChartOfYear(<%= userProfile.employee %>)" value="Show Sales">
+                </div>
+            </div>
+            <div class="row">
+                <div id="monthlySalesChartDiv" class="col-md-12 col-sm-12">
+                    <canvas id="monthlySalesChart"></canvas>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4 col-sm-4">
+                    <input type="number" min="4" max="4" maxlength="4" placeholder="<%= new Date().getFullYear() %>" id="salesCountYear">
+                </div>
+                <div class="col-md-4 col-sm-4">
+                <input type="button" onclick="loadMonthlySalesCountChartOfYear(<%= userProfile.employee %>)" value="Show Sales Count">
+                </div>
+            </div>
+            <div class="row">
+                <div id="monthlySalesCountChartDiv" class="col-md-12 col-sm-12">
+                    <canvas id="monthlySalesCountChart"></canvas>
+                </div>
+            </div>
+          </div>
+        <div class="tab-pane" id="a">
+        <!-- begin form for edit-->
+        <form method="POST" action="/editemployee" id="editForm" style="display:none">
+          <input type="hidden" name="empid" value="<%= userProfile.employeeid %>">
+          <div class="card p-4">
+            <div class="form-group">
+              <label for="fname">First Name:</label>
+              <input type="text" class="form-control" id="fname" name="firstname" placeholder="Enter first name" value="<%=userProfile.firstname%>" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name:</label>
+              <input type="text" class="form-control" id="lname" name="lastname" placeholder="Enter last name" value="<%=userProfile.lastname%>" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<%=userProfile.email%>" required>
+            </div>
+            <div class="form-group">
+              <label for="phno">Phone Number:</label>
+              <input type="tel" class="form-control" id="phno" name="phone" placeholder="Enter Phone number" value="<%=userProfile.phonenumber%>" required>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-3">
+                  Address
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-8">
+                          <input id="streetname" type="text" name="streetname" title="Street Name" placeholder="Street Name" class="form-control" value="<%=userProfile.street%>" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="housenumber" type="text" name="housenumber" title="House Number" placeholder="House Number" class="form-control"  value="<%=userProfile.housenumber%>" required/>
+                        </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <select id="country" name="country" class="form-control" required></select>
+                      </div>
+                      <div class="col-md-6">
+                        <select name="state" id="state" class="form-control"><option value="0" disabled selected required>Select State</option></select>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input id="plz" type="number" name="plz" title="PLZ" placeholder="PLZ" class="form-control" value="<%=userProfile.plz%>" required/>
+                        </div>
+                        <div class="col-md-6">
+                          <input id="city" type="text" name="city" title="City" placeholder="City" class="form-control" value="<%=userProfile.city%>" onfocus="loadCity()" required/>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+       </form>
+         <!-- end form for edit-->
+        <% if(locals.userProfile){%>
+          <div class="card p-4" id="viewForm">
+            <div class="card-block">
+              <div class="row">
+                <div class="col-md-4">
+                  <h6>First Name</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.firstname%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Last Name</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.lastname%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Email</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.email%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Address</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.street%> <%=userProfile.housenumber%>, <%=userProfile.plz%>, <%=userProfile.city%>, <%=userProfile.state%>, <%=userProfile.country%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Phone Number</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.phonenumber%></span>
+                </div>
+             </div>
+             <hr>
+             <% if(userProfile.country && userProfile.state){ %>
+               <button type="button" class="btn btn-primary" onclick="showedit('<%=userProfile.country%>','<%=userProfile.state%>')">Edit</button>
+             <% }
+             else{%>
+               <button type="button" class="btn btn-primary" onclick="showedit('undefined','undefined')">Edit</button>
+               <%}%>
+        </div>
+        </div>
+        <% } %>
+        </div>
+        <div class="tab-pane" id="b">
+          <div class="propertyView">
+            <div>
+              <button type="button" class="btn btn-default" onclick="AddProperty()">New Property</button>
+            </div>
+            <% if(locals.myProperties){
+                for(var i = 0;i < myProperties.length;i++) { %>
+                <div class="card p-3 m-2">
+                  <div class="row card-block">
+                    <div class="myProperties col-sm-6 col-md-6">
+                      <h5><%= myProperties[i].title%></h5>
+                      <h5>€<%= myProperties[i].price%></h5>
+                      <div class="card-text"><%=myProperties[i].street%><br><%=myProperties[i].plz%>,<%=myProperties[i].city%></div>
+                      <div class="card-text">Year Built: <%=myProperties[i].yearbuilt%><br>Published In: <%=myProperties[i].posted%></div>
+
+                    </div>
+                    <div class="propertyImage col-sm-4 col-md-4">
+                      <% if(myProperties[i].image1){%>
+                        <img src="<%=myProperties[i].image1%>" class="img-thumbnail" alt="Property Image">
+                      <%}else{%>
+                        <img src="/img/property/defaultProperty.jpeg" class="img-thumbnail" alt="Property Image">
+                       <%}%>
+                    </div>
+                    <div class='col-sm-2 col-md-2'>
+                      <button type='button' class='btn btn-default btn-sm' onclick='RemoveProperty(<%=myProperties[i].id%>,this)'>X</button>
+                    </div>
+                  </div>
+                </div>
+                  <% }
+                }else{ %>
+                  <div class="card p-3 m-2">
+                      No Property
+                  </div>
+            <% } %>
+          </div>
+            <div class="propertyNew" style="display:none">
+              <div class="jumbotron">
+              <form name="propertyNew" method="post" enctype="multipart/form-data" action="/addproperty" id="propertyNew">
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Title</b>
+                  </div>
+                  <div class="col-md-9">
+                    <input placeholder="Title" title="Title" name="title" type="text" class="form-control" required autofocus/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Overview</b>
+                  </div>
+                  <div class="col-md-9">
+                    <textarea placeholder="Overview" title="Overview" name="overview" class="form-control" required></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Description</b>
+                  </div>
+                  <div class="col-md-9">
+                    <textarea placeholder="Description" title="Description" name="desc" class="form-control" required></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Size</b>
+                  </div>
+                  <div class="col-md-9">
+                    <input type="number" name="size" class="form-control" id="propSize" placeholder="Size" title="Size (in metre-squared)" required/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Number of Rooms</b>
+                  </div>
+                  <div class="col-md-9">
+                    <input type="number" name="numberofrooms" class="form-control" id="propNoOfRooms" placeholder="Number of rooms" title="Number Of Rooms" required/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Furnishing state</b>
+                  </div>
+                  <div class="col-md-9">
+                      <select class="form-control" name="furnishingstate" required id="propFur">
+                          <option value="" disabled selected>Choose One</option>
+                          <% if (locals.furS) { %>
+                            <% for(var i=0; i < furS.length; i++) { %>
+                              <option value="<%= furS[i].id %>"><%= furS[i].value %></option>
+                              <% } %>
+                              <% } %>
+                            </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Address</b>
+                  </div>
+                  <div class="col-md-9">
+                      <div class="row">
+                          <div class="col-md-8">
+                            <input id="streetname1" type="text" name="streetname" title="Street Name" placeholder="Street Name" class="form-control" required/>
+                          </div>
+                          <div class="col-md-4">
+                              <input id="housenumber1" type="text" name="housenumber" title="House Number" placeholder="House Number" class="form-control" required/>
+                          </div>
+                        </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <select id="country1" name="country" class="form-control" ></select>
+                        </div>
+                        <div class="col-md-6">
+                          <select name="state" id="state1" class="form-control"><option value="0" disabled selected>Select State</option></select>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-6">
+                              <input id="plz1" type="number" name="plz" title="PLZ" placeholder="PLZ" class="form-control" required/>
+                          </div>
+                          <div class="col-md-6">
+                            <input id="city1" type="text" name="city" title="City" placeholder="City" class="form-control" required onfocus="loadCityProperty()"/>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Price</b>
+                  </div>
+                  <div class="col-md-3">
+                    <input placeholder="Price" title="Price" name="price" type="number" class="form-control" required/>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="button" class="btn btn-success" onclick="PredictPrice()" value="Find Price Range" name="Price Range" />
+                    <div class="c-validation" style="display:none">Enter required values to get Price Range</div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <b>Images</b>
+                  </div>
+                  <div class="col-md-9" style="display:inherit">
+                    <div class="property-pic col-md-4" id="divProperty1"  style="background-image:url('/img/property/defaultProperty.jpeg')" >
+                      <div class="myUpload pt-5" style="display:none">
+                            <input type="file" id="imgProperty1" name="imgProperty1" hidden required>
+                            <label for="imgProperty1">Browse</label>
+                    </div>
+                  </div>
+                  <div class="property-pic col-md-4" id="divProperty2" style="background-image:url('/img/property/defaultProperty.jpeg')" >
+                    <div class="myUpload pt-5" style="display:none">
+                        <input type="file" id="imgProperty2" name="imgProperty2" hidden>
+                          <label for="imgProperty2">Browse</label>
+                  </div>
+                </div>
+                <div class="property-pic col-md-4" id="divProperty3" style="background-image:url('/img/property/defaultProperty.jpeg')" >
+                  <div class="myUpload pt-5" style="display:none">
+                        <input type="file" id="imgProperty3" name="imgProperty3" hidden>
+                        <label for="imgProperty3">Browse</label>
+                </div>
+              </div>
+                  </div>
+                </div>
+                <input type="submit" id="submitbutton" class="btn btn-primary btn-block" value="Save">
+                </form>
+              </div>
+                <input type="button"  onclick="Backedit()" id="backbutton" class="btn btn-primary btn-sm" value="BACK">
+            </div>
+        </div>
+        <div class="tab-pane" id="c">
+          <div class="salesView">
+            <% if(locals.sales && 0 < sales.length){%>
+              <table class="table table-striped">
+              <thead>
+               <tr>
+                 <th>Num</th>
+                 <th>Date</th>
+                 <th>Property Name</th>
+                 <th>Sold To</th>
+                 <th>Price</th>
+               </tr>
+               </thead>
+               <tbody>
+               <%for(var i = 0;i < sales.length;i++) { %>
+                 <tr>
+                   <th scope="row"><%= i+1 %></th>
+                   <td><%= sales[i].saletime %></td>
+                   <td><%= sales[i].property_title %></td>
+                   <td><%= sales[i].customer_name %> [ <%= sales[i].customer_email %> ]</td>
+                   <td><%= sales[i].price %></td>
+                </tr>
+                <% }%>
+              </tbody>
+              </table>
+              <%}else{ %>
+                <div class="card p-3 m-2">
+                    No Sales
+                </div>
+          <% } %>
+          <div>
+          <button type="button" class="btn btn-pink" onclick="AddSales()"><i class="fa fa-bar-chart pr-2" aria-hidden="true"></i>Add Sales</button>
+        </div>
+      </div>
+
+       <div class="salesNew" style="display:none">
+         <div class="jumbotron">
+          <form name="salesNew" method="post" action="/addsales" id="salesNew">
+             <p class="text-left blue-text">Please Enter the Date of the Sale</p>
+              <input type="date" name="saledate" width="276" required/>
+              <hr>
+              Properties
+              <select class="form-control" name="propertyid" required>
+                <option value="" disabled selected>Choose One</option>
+                <% if (locals.myProperties) { %>
+                  <% for(var i=0; i < myProperties.length; i++) { %>
+                    <option value="<%= myProperties[i].id %>"><%= myProperties[i].title %></option>
+                    <% } %>
+                    <% } %>
+                  </select>
+              <hr>
+              <input type="text" class="form-control pt-0" placeholder="First Name of the Buyer" name="firstname" required>
+              <input type="text" class="form-control pt-0" placeholder="Last Name of the Buyer" name="lastname" required>
+              <input type="email" class="form-control pt-0" placeholder="Email Name of the Buyer" name="email" required>
+              <hr>
+              <input type="number" class="form-control pt-0" placeholder="Price" name="price" required/>
+           <br>
+           <hr>
+
+            <input type="submit" id="submitbuttonSale" class="btn btn-primary btn-block" value="Add Sale"/>
+      </form>
+      </div>
+    </div>
+  </div>
+
+        <div class="tab-pane" id="d">
+          <div class="row">
+        <div class="col-4">
+
+       <div class="list-group" id="myList" role="tablist">
+        <ul class="list-group" id="mylist">
+          <%if(locals.Messages){ for(var i = 0;i < Messages.length;i++) { %>
+            <li class="list-group-item" ><a href="#" onclick="Loadmessages(<%= Messages[i].fromuser %>, <%= Messages[i].touser %>,this)" role="tab"><h6><%=Messages[i].firstname%> <%=Messages[i].lastname%></h6></a></li>
+          <% }} %>
+     </div>
+        </div>
+
+        <div class="col-8 messageBox" style="display:none">
+          <div class="tab-content messageContent">
+
+
+       </div>
+         <div class="row">
+         <div class="col-lg-12">
+             <form action="/reply" method="POST" enctype="multipart/form-data" id="form_id">
+                 <div class="form-group pt-5">
+                    <%if(locals.Messages && Messages.length > 0){ %>
+                    <input type="hidden" name="euser" value="<%= Messages[0].euser %>">
+                     <input type="hidden" name="cuser" value="<%= Messages[0].cuser %>">
+                     <input type="text" name="reply" class="form-control" tabindex="4" id="msgSend" placeholder="Write your message" required>
+                     <%} %>
+                 </div>
+                 <input type="submit" name="submit" class="btn btn-primary btn-block" tabindex="5" value="Send">
+             </form>
+         </div>
+       </div>
+      </div>
+    </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-3">
+      <div class="card testimonial-card align-items-center">
+          <% if(locals.userProfile){%>
+            <a href="#" class="profile-pic m-2">
+                <% if(userProfile.profilepicture){ %>
+              <div class="profile-pic"  style="background-image:url('<%=userProfile.profilepicture%>')" >
+              <%}
+              else {%>
+                <div class="profile-pic"  style="background-image:url('/img/assets/avatar.png')" >
+
+              <% }%>
+                <div class="myUpload pt-5" style="display:none">
+                <form id="frmUploader" enctype="multipart/form-data" action="/upload" method="post">
+                  <label id="myUserId" hidden><%=userProfile.employeeid%></label>
+                  <span>
+                  <span class="btn btn-file">
+                      <input type="file" id="imgInp" name="fileUser" hidden>
+                      <label for="imgInp">Browse</label>
+                  </span>
+                </span>
+              </form>
+              </div>
+              </div>
+            </a>
+            <div class="card-body">
+              <h6><%=userProfile.firstname%></h6>
+              <h6><%=userProfile.email%><h6>
+            </div>
+
+          <% } %>
+          </div>
+          <hr>
+          <div class="card align-items-center">
+              <div class="card-body">
+                  <h4 class="card-title align-items-center">
+                  &nbsp;&nbsp;&nbsp;Year Wise Total Sales
+                  </h4>&nbsp;&nbsp;&nbsp;<input type="button" value="Refresh" onclick="loadYearWiseTotalSalesChart(<%= userProfile.employee %>)">
+                  <p id="yearlyTotalSalesChartP" class="card-text align-items-center">
+                      <canvas id="yearlyTotalSalesChart"></canvas>
+                  </p>
+              </div>
+          </div>
+          <hr>
+          <div class="card align-items-center">
+              <div class="card-body">
+                  <h4 class="card-title align-items-center">
+                  &nbsp;&nbsp;&nbsp;Year Wise Total Sales Count
+                  </h4>&nbsp;&nbsp;&nbsp;<input type="button" value="Refresh" onclick="loadYearWiseTotalSalesCountChart(<%= userProfile.employee %>)">
+                  <p id="yearlyTotalSalesCountChartP" class="card-text align-items-center">
+                      <canvas id="yearlyTotalSalesCountChart"></canvas>
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div id="agentDialog" title="Confirmation" style="display:none">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure to delete Property?</p>
+</div>
+
+<% include _linkToScripts.html %>
+<% include UserProfileImage.html%>
+<script type="text/javascript" src="js/countries.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.14.2/math.min.js"></script>
+<script type="text/javascript">
+    $(".heart.fa").click(function() {
+      $(this).toggleClass("fa-heart fa-heart-o");
+    });
+    function showedit(country,state){
+      $("#viewForm").hide();
+      $("#editForm").show();
+      if(country!="undefined")
+        $("#country").val(country);
+      populateStates('country', 'state');
+      if(state!="undefined")
+        $("#state").val(state);
+    }
+    function AddProperty(){
+      $(".propertyView").hide();
+      $(".propertyNew").show();
+
+    }
+    function Backedit(){
+      $(".propertyNew").hide();
+      $(".propertyView").show();
+    }
+  populateCountries("country", "state");
+  populateCountries("country1", "state1"); // first parameter is id of country drop-down and second parameter is id of state drop-down
+  //delete property
+  function RemoveProperty(id,element){
+    $("#agentDialog").dialog({
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+    buttons : {
+      "Confirm" : function() {
+        $(element).parent().closest('.card').remove();
+        var restUrl='/deleteproperty';
+        $.ajax({
+            type     : 'POST',
+            url      : restUrl,
+            data     : {id: id},
+            success  : function(data) {
+            console.log("removed from DB");
+            }
+        });
+        $(this).dialog("close");
+      },
+      "Cancel" : function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+
+  }
+
+//new property
+  $('#propertyNew').on('submit',function(e){
+    e.preventDefault();
+    var restUrl="/uploadpropertyimage";
+    var formProp = $('#propertyNew')[0];
+    var data = new FormData(formProp);
+    $.ajax({
+        type     : "POST",
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache    : false,
+        url      : restUrl,
+        data     : data,
+        success  : function(data) {
+          //var newFileName=data;
+          //var filePath="/img/property/"+newFileName;
+          var dataForm = $('#propertyNew').serializeArray(); // convert form to array
+          dataForm.push({name: "names", value: data});
+          $.ajax({
+              type     : "POST",
+              cache    : false,
+              url      : "/addproperty",
+              data     : dataForm,
+              success  : function(data) {
+                var htmlagents="";
+                 htmlagents +="<div><button type='button' class='btn btn-default' onclick='AddProperty()'>New Property</button></div>";
+                $.each(data,  function (index, element) {
+                  //forming property card pls verify field names
+                   htmlagents +="<div class='card p-3 m-2'><div class='row card-block'>";
+                   htmlagents +="<div class='myProperties col-sm-6 col-md-6'><h5>"+element.title+"</h5><h5>€"+element.price+"</h5>";
+                   htmlagents +="<div class='card-text'>"+element.street+"<br>"+element.plz+","+element.city+"</div>";
+                   htmlagents +="<div class='card-text'>Year Built:"+ element.yearbuilt+"<br>Published In:"+ element.posted+"</div></div>";
+                   htmlagents +="<div class='propertyImage col-sm-4 col-md-4'>";
+                   if(element.image1){
+                     htmlagents +="<img src='"+element.image1+"' class='img-thumbnail' alt='Property Image'></div>";
+                   }
+                   else {
+                     htmlagents +="<img src='/img/property/defaultProperty.jpeg' class='img-thumbnail' alt='Property Image'></div>";
+                   }
+                   htmlagents +="<div class='col-sm-2 col-md-2'><button type='button' class='btn btn-default btn-sm' onclick='RemoveProperty("+element.id+",this)'>X</button></div></div></div>"
+                 });
+                $(".propertyNew").hide();
+                $('.propertyView').html(htmlagents);
+                $(".propertyView").show();
+                $('#propertyNew')[0].reset();
+              }
+          });
+        }
+    });
+
+});
+
+  function AddSales(){
+      $(".salesView").hide();
+      $(".salesNew").show();
+    }
+
+    $('#datepicker').datepicker({
+              uiLibrary: 'bootstrap4',
+              iconsLibrary: 'fontawesome'
+          });
+
+          function loadCity()
+          {
+            $.ajax({
+            url: "http://maps.googleapis.com/maps/api/geocode/json?address="+$('#plz').val()+","+$('#state').val()+","+$('#country').val(),
+            success: function( results ) {
+              var city = "";
+                var address_comp = results.results[0].address_components;
+                console.log(address_comp);
+                $.each(address_comp,  function (index, element){
+                  var type = element.types[0];
+                  if(city === "" && ( type === "locality" || type.includes("administrative_area_level_")))
+                  {
+                    city = element.long_name;
+                  }
+                });
+                $('#city').val(city);
+            }
+          });
+        }
+        function loadCityProperty(){
+          $.ajax({
+          url: "http://maps.googleapis.com/maps/api/geocode/json?address="+$('#plz1').val()+","+$('#state1').val()+","+$('#country1').val(),
+          success: function( results ) {
+            var city = "";
+              var address_comp = results.results[0].address_components;
+              console.log(address_comp);
+              $.each(address_comp,  function (index, element){
+                var type = element.types[0];
+                if(city === "" && ( type === "locality" || type.includes("administrative_area_level_")))
+                {
+                  city = element.long_name;
+                }
+              });
+              $('#city1').val(city);
+          }
+        });
+        }
+
+        function readURL(input,name) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#'+name).css('background-image', 'url('+ e.target.result+')');
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imgProperty1").change(function(){
+            readURL(this,"divProperty1");
+          });
+        $("#imgProperty2").change(function(){
+            readURL(this,"divProperty2");
+          });
+        $("#imgProperty3").change(function(){
+            readURL(this,"divProperty3");
+          });
+
+      /*
+      function: Predict Price
+      Uses normal equation in linear regression to calculate price of a new property price
+      Here csv Pricesizerooms contains only size, rooms and prices
+      if we extend csv with with more fields prediction will automatically consider the added fields
+      */
+      function PredictPrice(){
+            var propertySize = $("#propSize").val();
+            var propertyRooms = $("#propNoOfRooms").val();
+            if(propertySize && propertyRooms){
+              $(".c-validation").hide();
+              $.ajax({
+               type: "GET",
+               url: '/img/Pricesizerooms.csv',
+               dataType: "text",
+               success: function(response)
+               {
+                   var allTextLines = response.split(/\r\n|\n/);
+                   var headers = allTextLines[0].split(';');
+                   var properties = [];
+                   var price = [];
+
+                   for (var i = 1; i < allTextLines.length; i++) {
+                     var data = allTextLines[i].split(';');
+                     if (data.length == headers.length) {
+
+                       var tarr = [];
+                       var tarr2 =[];
+                       for (var j = 0; j < headers.length; j++) {
+
+                            tarr.push(parseInt(data[j]));
+                       }
+                       properties.push(tarr);
+                      // price.push(tarr2);
+                     }
+                   }
+                  var propertyPrice = Math.round(InitProperties(properties,propertySize,propertyRooms));
+                  $("#lblPrice").text(propertyPrice.toLocaleString('it-IT', {style: 'currency', currency: 'EUR'}));
+                  PlotCharts(propertyPrice, properties);
+               },
+               error:function(err){
+                 console.log("err");
+               }
+             });
+
+         }
+         else{
+           $(".c-validation").show().delay(1500).fadeOut();
+         }
+        }
+        //Prepare input array and computes new price using computed theta
+        function InitProperties(matrix,size,noRooms) {
+
+            // Part 0: Preparation
+            console.log('Part 0: Preparation ...\n');
+
+            let X = math.eval('matrix[:, 1:2]', {
+              matrix,
+            });
+            let y = math.eval('matrix[:, 3]', {
+              matrix,
+            });
+
+            let m = y.length;
+
+            // Part 1: Normal Equation
+            console.log('Part 1: Normal Equation ...\n');
+
+            // Add Intercept Term
+            X = math.concat(math.ones([m, 1]).valueOf(), X);
+
+            let theta = NormalEquation(X, y);
+
+            console.log('theta: ', theta);
+            console.log('\n');
+
+            console.log('Part 3: Price Prediction ...\n');
+
+            let houseVector = [1, size, noRooms];
+            let price = math.eval('houseVector * theta', {
+              houseVector,
+              theta,
+            });
+
+            console.log('Predicted price for a'+size +'square meter and' +noRooms+'room house: ', price);
+            return price;
+        }
+// computes theta
+        function NormalEquation(X, y) {
+            let theta = math.eval(`inv(X' * X) * X' * y`, {
+              X,
+              y,
+            });
+
+            return theta;
+        }
+// Plot charts of properties similar to users Properties
+// Size price chart and number of rooms price chart
+      function PlotCharts(propPrice, properties){
+            var propertySize = $("#propSize").val();
+            var propertyRooms = $("#propNoOfRooms").val();
+            var dataPoint =[], dataPoint1 = [];
+            var prices=[],sizes=[],rooms=[];
+            JaccardAlgorithm(properties,propPrice,function(properties){
+              var reccProperties = [];
+              properties.sort(function(a, b){
+                return b.jaccCoeff-a.jaccCoeff
+              });
+
+              for(var i = 0;i <100;i++) {
+                reccProperties[i]=properties[i];
+              }
+                CanvasJS.addColorSet("greenShades",
+                 [//colorSet Array
+
+                 "#6666FF"
+
+                 ]);
+
+                for(var i=0;i<reccProperties.length;i++){
+                  dataPoint.push({x:reccProperties[i][0],y:reccProperties[i][2]});
+                  dataPoint1.push({x:reccProperties[i][1],y:reccProperties[i][2]});
+                }
+                dataPoint.push({ x: propertySize, y: propPrice, indexLabel: "Predicted Price", markerType: "circle",markerColor: "red", markerSize: 12 });
+                  var chart = new CanvasJS.Chart("chartContainer", {
+                      width:400,
+                      dataPointWidth: 20,
+                      animationEnabled: true,
+                      zoomEnabled: true,
+                      colorSet: "greenShades",
+                      title:{
+                        text: "Size Price Trend",
+                        fontSize: 20
+                      },
+                      axisX: {
+                        title:"Price (in €)",
+                        titleFontSize: 15,
+                        stripLines:[
+                          {
+                            value: propertySize,
+                            label: propertySize
+                          }
+                        ]
+                      },
+                      axisY:[{
+                        title: "Size (m²)",
+                        titleFontSize: 15,
+                      }
+                    ],
+                     data: [
+                     {
+                         type: "scatter",
+                         dataPoints: dataPoint
+                     }
+                   ]
+
+               });
+               dataPoint1.push({ x: propertyRooms, y: propPrice, indexLabel: "Predicted Price", markerType: "circle",markerColor: "red", markerSize: 12 });
+             var chart1 = new CanvasJS.Chart("chartContainer2", {
+                 width:400,
+                 dataPointWidth: 20,
+                 animationEnabled: true,
+                 zoomEnabled: true,
+                 colorSet: "greenShades",
+                 title:{
+                   text: "No of Rooms Price Trend",
+                   fontSize: 20
+                 },
+                 axisX: {
+                   title:"Number of Rooms",
+                   titleFontSize: 15,
+                   stripLines:[
+                     {
+                       value: $("#propNoOfRooms").val(),
+                       label: $("#propNoOfRooms").val()
+                     }
+                   ]
+                 },
+                data: [
+                {
+                    type: "scatter",
+                    dataPoints: dataPoint1
+                }
+              ]
+
+          });
+          chart.render();
+          chart1.render();
+
+            $('#modalpricerange').modal('show');
+            });
+
+      }
+
+      //JaccardAlgorithm to find similarity between properties
+      function JaccardAlgorithm(properties,pricePredicted,callback){
+        var propertySize = $("#propSize").val();
+        var propertyRooms = $("#propNoOfRooms").val();
+        var reccProperties = [];
+        var jaccPositive = 0, jaccAll = 0, jaccCoeff = 0;
+              for(var i = 0;i < properties.length;i++) {
+                  if(!properties[i].jaccCoeff){
+                    properties[i].jaccCoeff=-1;
+                  }
+                    jaccPositive = 0, jaccAll = 0, jaccCoeff = 0;
+                        //size
+                       if(Math.abs(propertySize-properties[i][0])<100){
+                          jaccPositive += 2;
+                          jaccAll++;
+                        }
+                        else if(Math.abs(propertySize-properties[i][0])<200){
+                            jaccPositive += 1;
+                            jaccAll++;
+                          }
+                        else {
+                            jaccAll++;
+                        }
+                        //number of Rooms
+                        if(Math.abs(properties[i][1] - propertyRooms)<1){
+                            jaccPositive += 2;
+                            jaccAll++;
+                        }
+                        else if(Math.abs(properties[i][1] - propertyRooms)<2){
+                              jaccPositive += 1;
+                              jaccAll++;
+                          }
+                        else{
+                            jaccAll++;
+                        }
+                       if(Math.abs(properties[i][2] - pricePredicted) < 100000){
+                            jaccPositive += 2;
+                            jaccAll++;
+                        }
+                        else if(Math.abs(properties[i][2] - pricePredicted)<200000){
+                              jaccPositive += 1;
+                              jaccAll++;
+                          }
+                        else{
+                            jaccAll++;
+                        }
+                        jaccCoeff = jaccPositive/jaccAll;
+                        if(jaccCoeff > properties[i].jaccCoeff)
+                            properties[i].jaccCoeff=jaccCoeff;
+
+              }
+          callback(properties);
+
+      }
+      // To use predicted Price
+      function UsePrice(element){
+
+       var PriceEuro = $("#lblPrice").text();
+       PriceEuro = PriceEuro.split(",")[0];
+       $("input[name='price']").val(Number(PriceEuro.replace(/[^0-9\-]+/g,"")));
+     }
+</script>
+<script type="text/javascript">
+    function loadDashboard (employeeId) {
+        loadMonthlySalesChartOfYear(employeeId);
+
+        loadMonthlySalesCountChartOfYear(employeeId);
+
+        loadYearWiseTotalSalesChart(employeeId);
+
+        loadYearWiseTotalSalesCountChart(employeeId);
+    }
+
+    function loadMonthlySalesChartOfYear (employeeId) {
+        var salesYear = $('#salesYear').val();
+
+        if (!salesYear) {
+            salesYear = new Date().getFullYear();
+        }
+
+        // if sales year is invalid data then load monthly sales of current year
+        if (4 != salesYear.length || (4 == salesYear.length && 1000 > parseInt(salesYear))) {
+            salesYear = new Date().getFullYear();
+            $('#salesYear').val(salesYear);
+        }
+
+        var monthlySalesUrl = "/employees/".concat(
+
+            employeeId,
+
+            "/dashboard/",
+
+            salesYear,
+
+            "/monthly-sales"
+        );
+
+        $.ajax({
+            type     : "GET",
+            cache    : false,
+            url      : monthlySalesUrl,
+            success  : function(response) {
+                //line
+                $('#monthlySalesChartDiv').empty();
+                $('#monthlySalesChartDiv').html('<canvas id="monthlySalesChart"></canvas>');
+                var ctxL = document.getElementById("monthlySalesChart").getContext('2d');
+                var myLineChart = new Chart(ctxL, {
+                    type: 'line',
+                    data: {
+                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jue", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        datasets: response
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            }
+        });
+    }
+
+    function loadMonthlySalesCountChartOfYear (employeeId) {
+        var salesYear = $('#salesCountYear').val();
+
+        if (!salesYear) {
+            salesYear = new Date().getFullYear();
+        }
+
+        // if sales year is invalid data then load monthly sales of current year
+        if (4 != salesYear.length || (4 == salesYear.length && 1000 > parseInt(salesYear))) {
+            salesYear = new Date().getFullYear();
+            $('#salesCountYear').val(salesYear);
+        }
+
+        var monthlySalesCountUrl = "/employees/".concat(
+
+            employeeId,
+
+            "/dashboard/",
+
+            salesYear,
+
+            "/monthly-sales-count"
+        );
+
+        $.ajax({
+            type     : "GET",
+            cache    : false,
+            url      : monthlySalesCountUrl,
+            success  : function(response) {
+                //bar
+                $('#monthlySalesCountChartDiv').empty();
+                $('#monthlySalesCountChartDiv').html('<canvas id="monthlySalesCountChart"></canvas>');
+                var ctxB = document.getElementById("monthlySalesCountChart").getContext('2d');
+                var myBarChart = new Chart(ctxB, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jue", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        datasets: response
+                    },
+                    optionss: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function loadYearWiseTotalSalesChart (employeeId) {
+        var yearlyTotalSalesUrl = "/employees/".concat(
+
+            employeeId,
+
+            "/dashboard/yearly-total-sales"
+        );
+
+        $.ajax({
+            type     : "GET",
+            cache    : false,
+            url      : yearlyTotalSalesUrl,
+            success  : function(response) {
+                // pie
+                $('#yearlyTotalSalesChartP').empty();
+                $('#yearlyTotalSalesChartP').html('<canvas id="yearlyTotalSalesChart"></canvas>');
+                var ctxP = document.getElementById("yearlyTotalSalesChart").getContext('2d');
+                var myPieChart = new Chart(ctxP, {
+                    type: 'pie',
+                    data: {
+                        labels: response.years,
+                        datasets: response.sales
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            }
+        });
+    }
+
+    function loadYearWiseTotalSalesCountChart (employeeId) {
+        var yearlyTotalSalesCountUrl = "/employees/".concat(
+
+            employeeId,
+
+            "/dashboard/yearly-total-sales-count"
+        );
+
+        $.ajax({
+            type     : "GET",
+            cache    : false,
+            url      : yearlyTotalSalesCountUrl,
+            success  : function(response) {
+                // pie
+                $('#yearlyTotalSalesCountChartP').empty();
+                $('#yearlyTotalSalesCountChartP').html('<canvas id="yearlyTotalSalesCountChart"></canvas>');
+                var ctxP = document.getElementById("yearlyTotalSalesCountChart").getContext('2d');
+                var myPieChart = new Chart(ctxP, {
+                    type: 'pie',
+                    data: {
+                        labels: response.years,
+                        datasets: response.salesCount
+                    },
+                    options: {
+                        responsive: true
+                    }
+                });
+            }
+        });
+    }
+
+    function Loadmessages(fromuser, touser, element)
+    {
+      $(".messageBox").show();
+      $.ajax({
+              type     : "POST",
+              cache    : false,
+              url      : "/getmsg",
+              data     : {fromuser: fromuser,touser: touser},
+            success  : function(data) {
+              var htmlMessages="";
+              $.each(data, function (index, element) {
+                if(element.touser==touser && element.fromuser==fromuser )
+                    htmlMessages+="<div class='row'><div class='col-md-6 tab-pane active sendMessage m-2'>"+element.messages+"</div><div class='col-md-4'></div></div>";
+                else if(element.touser==fromuser && element.fromuser==touser){
+                    htmlMessages+="<div class='row'><div class='col-md-4'></div><div class='col-md-6 tab-pane active receiveMessage m-2'>"+element.messages+"</div></div>";
+                }
+              });
+                $(".messageContent").html(htmlMessages);
+                $("input[name = 'cuser']").val(fromuser);
+            }
+        });
+    }
+
+    $('#form_id').on('submit',function(e){
+      e.preventDefault();
+      $.ajax({
+          type     : "POST",
+          cache    : false,
+          url      : $(this).attr('action'),
+          data     : $(this).serialize(),
+          success  : function(data) {
+            var htmlMsg="<div class='row'><div class='col-md-4'></div><div class='col-md-6 tab-pane active receiveMessage m-2'>"+$("#msgSend").val()+"</div></div>";
+              $(".messageContent").append(htmlMsg);
+              $("#msgSend").val("");
+          }
+      });
+
+    });
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+
+<!--
+File Name: contactus.ejs
+
+Description:
+This is a Contact Us page of the Biig application.
+
+Authors:
+Mahdis,Akhila-->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>BiiG</title>
+        <% include _linkToStylesheets.html %>
+    </head>
+
+    <body id="intro">
+
+        <% include _header.ejs %>
+        <% include _modalSignIn.html %>
+        <% include _modalSignUp.html %>
+        <br><br><br><br>
+
+        <div class="row container-fluid  align-items-center justify-content-center p-4" >
+            <div class="col-lg-8 p-5 text-align-center align-items-center" style="background: rgba(255,255,220,0.8)">
+                <p class="h2-responsive">Get In Touch</p>
+                <p class="h6-responsive">please fill out the quick form and we will get in touch with you in lightening speed.</p>
+
+
+                <form class="width: 50%" id="myForm" method="post" action="/contactus">
+                    <!--First row-->
+                    <div class="row ">
+                        <!--First column-->
+                        <div class="col-md-4">
+                            <div class="md-form">
+                                <i class="fa fa-user prefix"></i>
+                                <input type="text" id="form81" name="name" class="form-control validate" required>
+                                <label for="form81" data-error="wrong" data-success="right">Type your name</label>
+                            </div>
+                        </div>
+
+                        <!--Second column-->
+                        <div class="col-md-4">
+                            <div class="md-form">
+                                <i class="fa fa-envelope prefix"></i>
+                                <input type="email" id="form82" name="email" class="form-control validate" required>
+                                <label for="form82" data-error="wrong" data-success="right">Type your email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.First row-->
+
+                    <!--Second row-->
+                    <div class="row">
+                        <!--First column-->
+                        <div class="col-md-8">
+
+                            <div class="md-form">
+                                <textarea type="text" name="message" id="form76" class="md-textarea" required></textarea>
+                                <label for="form76">Message</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/.Second row-->
+
+                    <div class="md-form form-group">
+                        <input type="submit" class="btn btn-primary btn-lg" value="Send">
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="col-lg-2 m-3 text-align-center">
+
+
+                <!--Panel-->
+                <div class="card">
+                    <h3 class="card-header primary-color white-text">Contact Us</h3>
+                    <div class="card-body">
+                        <h4 class="card-title">BiiG</h4>
+                        <p class="card-text">Hochschule Fulda,Lioba Str.2,Fulda-36037</p>
+                        <p class="card-text">Biig@gmail.com</p>
+                    </div>
+                </div>
+                <!--/.Panel-->
+
+
+            </div>
+            <!--/.Card-->
+
+        </div>
+
+        <% include _linkToScripts.html %>
+
+
+    </body>
+
+</html>

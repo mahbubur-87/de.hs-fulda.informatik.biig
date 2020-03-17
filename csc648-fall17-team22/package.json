@@ -1,0 +1,57 @@
+{
+  "name": "csc648-fall17-team22",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node Milestones/Milestone3/biig/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/swetaketum/csc648-fall17-team22.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "latest",
+    "basic-auth-connect": "latest",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "latest",
+    "client-sessions": "latest",
+    "connect": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "dateformat": "latest",
+    "debug": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-mailer": "latest",
+    "express-session": "latest",
+    "fs-extra": "latest",
+    "http-proxy": "latest",
+    "md5": "latest",
+    "mime": "latest",
+    "mongoose": "latest",
+    "morgan": "latest",
+    "multer": "latest",
+    "mysql": "latest",
+    "node-constants": "latest",
+    "nodemailer": "latest",
+    "nodemailer-smtp-transport": "latest",
+    "nodemon": "latest",
+    "numeral": "latest",
+    "passport": "latest",
+    "passport-local": "latest",
+    "pm2": "latest",
+    "request": "latest",
+    "serve-favicon": "latest",
+    "simple-encryptor": "latest",
+    "underscore": "latest",
+    "cors": "latest"
+  },
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  }
+}

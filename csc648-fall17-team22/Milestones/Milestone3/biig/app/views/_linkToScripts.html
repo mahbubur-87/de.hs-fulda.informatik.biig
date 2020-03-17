@@ -1,0 +1,150 @@
+        <!-- JQuery -->
+        <script type="text/javascript" src= "js/jquery-3.2.1.min.js"></script>
+        <!-- Bootstrap tooltips -->
+        <script type="text/javascript" src= "js/popper.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src= "js/bootstrap.min.js"></script>
+        <!-- MDB core JavaScript -->
+        <script type="text/javascript" src= "js/mdb.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/topLink.js"></script>
+            <script>
+                        var signinErr = '<%= locals.signinerror ? signinerror  : "" %>';
+                        if(signinErr != "")
+                        {
+                          $("#modalsignin").modal();
+                        }
+
+                        toastr.options = {
+                                                "closeButton": false,
+                                                "debug": false,
+                                                "newestOnTop": false,
+                                                "progressBar": false,
+                                                "positionClass": "toast-bottom-right",
+                                                "preventDuplicates": false,
+                                                "onclick": null,
+                                                "showDuration": "300",
+                                                "hideDuration": "1000",
+                                                "timeOut": "5000",
+                                                "extendedTimeOut": "1000",
+                                                "showEasing": "swing",
+                                                "hideEasing": "linear",
+                                                "showMethod": "fadeIn",
+                                                "hideMethod": "fadeOut"
+                                        };
+
+                        var message = '<%= locals.message ? message  : "" %>';
+                        if(message != "")
+                        {
+                                toastr.info(message);
+                        }
+
+           </script>
+           <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111218771-1"></script>
+        <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'UA-111218771-1');
+        </script>
+
+        
+<script>
+        var rPiIP = '';
+        var rPiName = '';
+        $(document).ready(function()
+        {
+                $.get('/getrpiip', function(data, status)
+                {
+                        if(status == "success" && data)
+                        {
+                                rPiIP = data[0].ip;
+                                rPiName = data[0].name;
+                                $('#videoiframe').attr('src', 'http://'+rPiIP+':9000/javascript_simple.html');
+                        }
+                });
+        });
+
+        var xHttp = new XMLHttpRequest();
+    
+        $(document).keydown(function(e)
+        {
+            if(e.which == 37)
+            {
+                $("#left").mousedown();
+            }
+            else if(e.which == 38)
+            {
+                $("#forward").mousedown();
+            }
+            else if(e.which == 39)
+            {
+                $("#right").mousedown();
+            }
+            else if(e.which == 40)
+            {
+                $("#back").mousedown();
+            }
+        });
+    
+        $(document).keyup(function(e)
+        {
+            if(e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40)
+            {
+                xHttp.open("GET", "http://"+rPiIP+"/cgi-bin/stop.cgi", true);
+                xHttp.send();
+            }
+        });
+    
+        $("#forward").mousedown(function()
+        {
+            xHttp.open("GET", "http://"+rPiIP+"/cgi-bin/forward.cgi", true);
+            xHttp.send();
+        });
+    
+        $("#left").mousedown(function()
+        {
+            xHttp.open("GET", "http://"+rPiIP+"/cgi-bin/left.cgi", true);
+            xHttp.send();
+        });
+    
+        $("#back").mousedown(function()
+        {
+            xHttp.open("GET", "http://"+rPiIP+"/cgi-bin/reverse.cgi", true);
+            xHttp.send();
+        });
+    
+        $("#right").mousedown(function()
+        {
+            xHttp.open("GET", "http://"+rPiIP+"/cgi-bin/right.cgi", true);
+            xHttp.send();
+        });
+    
+        $("#forward, #left, #back, #right").mouseup(function()
+        {
+            xHttp.open("GET", "http://"+rPiIP+"/cgi-bin/stop.cgi", true);
+            xHttp.send();
+        });
+    
+        </script>
+
+
+        <!--Footer-->
+        <footer class=" blue center-on-small-only fixed-bottom font-weight-bold text-center">
+
+            <!--Footertext-->
+            <div class="footer-copyright">
+                <div class="container-fluid">
+                   <p> "HS Fulda GSD Project, Fall 2017. For Demonstration Only." </p>
+                </div>
+            </div>
+            <!--/Footertext-->
+
+        </footer>
+
+        <!--/.Footer-->

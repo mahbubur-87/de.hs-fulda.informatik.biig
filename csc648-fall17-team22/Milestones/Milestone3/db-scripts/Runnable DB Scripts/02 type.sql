@@ -1,0 +1,9 @@
+ALTER TABLE type auto_increment = 1;
+INSERT INTO type(name, parenttype) VALUES('SECURITY_QUES', null);
+INSERT INTO type(name, parenttype) VALUES('DESIGNATION', null);
+INSERT INTO type(name, parenttype) VALUES('TITLE', null);
+INSERT INTO type(name, parenttype) VALUES('PROPERTY_TYPE', null);
+INSERT INTO type(name, parenttype) VALUES('PROPERTY_USAGE', null);
+INSERT INTO type(name, parenttype) VALUES('FURNISHING_STATE', null);
+INSERT INTO type(name, parenttype) VALUES('PROPERTY_SORT', null);
+INSERT INTO type(name, parenttype) VALUES('PROPERTY_SIZE_FILTER', null);

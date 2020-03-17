@@ -1,0 +1,192 @@
+/* Your custom styles */
+
+html,
+body,
+header,
+#intro {
+    height: 100%;
+}
+
+#intro {
+    background: url("../img/assets/bg_resized.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.the-blur{
+    background: rgba(0,0,0,.4);
+    z-index:1010;
+    -webkit-filter: blur(20px);
+    -moz-filter: blur(20px);
+    -o-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: blur(20px);
+ }
+ .displayHeading{
+   color:grey;
+ }
+/*Property Details Page Styles*/
+.agentProfile-pic {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+  vertical-align: middle;
+  }
+  #myCarousel .list-inline {
+    white-space:nowrap;
+    overflow-x:inherit;
+  }
+
+  #myCarousel .carousel-indicators {
+    position: static;
+    left: initial;
+    width: initial;
+    margin-left: initial;
+  }
+
+  #myCarousel .carousel-indicators > li {
+    width: initial;
+    height: initial;
+    text-indent: initial;
+    max-width:100px !important;
+  }
+
+  #myCarousel .carousel-indicators > li.active img {
+    opacity: 0.7;
+  }
+  #myCarousel .carousel-fade .carousel-inner .item {
+    opacity: 0;
+    transition-property: opacity;
+    overflow:hidden;
+  }
+  #myCarousel .item.active img {
+    transition: transform 5000ms linear 0s;
+  /* This should be based on your carousel setting. For bs, it should be 5second*/
+    transform: scale(1.05, 1.05);
+  }
+  #myCarousel .carousel-fade .carousel-inner .active {
+    opacity: 1;
+  }
+
+  #myCarousel .carousel-fade .carousel-inner .active.left,
+  #myCarousel .carousel-fade .carousel-inner .active.right {
+    left: 0;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  #myCarousel .carousel-fade .carousel-inner .next.left,
+  .carousel-fade .carousel-inner .prev.right {
+    opacity: 1;
+  }
+
+  #myCarousel.carousel-fade .carousel-control {
+    z-index: 2;
+  }
+  #back-to-top {
+    display: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  .ui-dialog-titlebar{
+    background-color:#33b5e5 !important;
+    color:white !important;
+  }
+  .ui-dialog .ui-dialog-buttonpane button{
+    background-color:#33b5e5 !important;
+    color:white !important;
+  }
+  /* Dashboards*/
+  .profile-pic {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+    vertical-align: middle;
+    text-align: center;
+    color: transparent;
+    transition: all .3s ease;
+    text-decoration: none;
+  }
+  .property-pic{
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
+    vertical-align: middle;
+    text-align: center;
+    color: transparent;
+    transition: all .3s ease;
+    text-decoration: none;
+  }
+  .property-pic:hover {
+      background-color: rgba(0,0,0,.5);
+      z-index: 10000;
+      color: #fff;
+      transition: all .3s ease;
+      text-decoration: none;
+  }
+  .profile-pic:hover {
+      background-color: rgba(0,0,0,.5);
+      z-index: 10000;
+      color: #fff;
+      transition: all .3s ease;
+      text-decoration: none;
+  }
+  .userValue{
+    color:darkcyan;
+  }
+  .profile-pic:hover .myUpload {
+      display: block !important;
+
+  }
+  .property-pic:hover .myUpload {
+      display: block !important;
+
+  }
+  .heart {
+    font-size: 25px;
+     color:red;
+   }
+   .sendMessage{
+     background-color:lightcyan;
+   }
+   .receiveMessage{
+     background-color:lightyellow;
+      text-align:right;
+   }
+
+  .c-validation{
+      padding: 5px !important;
+      border-radius: 0 !important;
+      border: 2px solid #c51244;
+      position: relative;
+      box-shadow: 1px 1px 1px #aaaaaa;
+      margin-top: 10px;
+    }
+  .c-validation:before{
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid #c51244;
+      position: absolute;
+      top: -10px;
+  }
+  .pricePredicted{
+    font-family: sans-serif;
+    font-size: xx-large;
+    color:coral;
+  }

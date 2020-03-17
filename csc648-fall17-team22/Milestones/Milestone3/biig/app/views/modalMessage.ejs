@@ -1,0 +1,73 @@
+
+<% if(locals.Messages){ %>
+  <div class="modal fade" id="messagemodal" tabindex="-1" role="form" aria-labelledby="message" aria-hidden="true">
+    <div class="modal-dialog" role="form">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signinmodal">Chat Window></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <%for(var i = 0;i < Messages.length;i++) { %>
+         <div class="card p-3 m-2">
+           <div class="row card-block">
+             <div class="messages col-sm-8 col-md-8">
+             From:<h6><%=Messages[i].senderfname%></h6><br>
+             <label class="card-title"><%=Messages[i].message%></label>
+             </div>
+           </div>
+         </div>
+           <% } %>
+           <form>
+               <div class="md-form">
+                 <label for="form76">Message</label><br>
+                 <textarea type="text" id="form76" class="md-textarea"></textarea>
+               </div>
+              <button type="button" id="reply" class="btn btn-primary">Reply</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% }
+else{ %>
+  <div class="modal fade" id="messagemodal" tabindex="-1" role="form" aria-labelledby="message" aria-hidden="true">
+    <div class="modal-dialog" role="form">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="signinmodal">Chat Window</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card p-3 m-2">
+            <div class="row card-block">
+              <div class="messages col-sm-8 col-md-8">
+                Test Messages
+              </div>
+            </div>
+          </div>
+          <div class="card p-3 m-2">
+            <form>
+                <div class="md-form">
+                  <label for="form76">Message</label><br>
+                  <textarea type="text" id="form76" class="md-textarea"></textarea>
+                </div>
+               <button type="button" id="reply" class="btn btn-default btn-sm">Reply</button>
+           </form>
+           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%} %>

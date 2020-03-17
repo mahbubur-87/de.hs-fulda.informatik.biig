@@ -1,0 +1,11 @@
+platform :ios, '11.2'
+
+target 'BIIG' do
+  
+    use_frameworks!
+
+    pod 'GooglePlaces'
+    pod 'GooglePlacePicker'
+    pod 'GoogleMaps'
+
+end

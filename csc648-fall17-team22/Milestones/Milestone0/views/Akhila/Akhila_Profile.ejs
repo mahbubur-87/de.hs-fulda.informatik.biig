@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Akhila</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Optional Bootstrap theme -->
+  <style>
+  body {
+    position: relative;
+    overflow-x: hidden;
+  }
+  body,html,.row { height: 100%;}
+  .container{
+    margin:2%;
+    height:100%
+  }
+  html{
+    background: white;/* Green */
+    background-image: url("fa17g22/img/background.jpg");
+    background-repeat:no-repeat;
+    background-size: 100%
+  }
+  body{
+    background-color: transparent !important;
+  }
+  .divNavigation{
+    background:  rgba(184,134,11,0.9);/* Green */
+    color: white;
+    height:90%;
+  }
+  .divMyHome{
+    background: rgba(184,134,11,0.9);
+    min-height:50%;
+    font-family: serif;
+    font-size:large;
+    color:white;
+    border: #333;
+  }
+  .myDescription{
+    padding:5%;
+    font-size:x-large;
+  }
+  .myHeader{
+    padding:10%;
+    text-align:center;
+  }
+  .myNav{
+    padding: 10%;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  li {
+    float: left;
+  }
+
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  .myPic{
+    border-radius: 50%;
+  }
+  .myIcon{
+    font-size: small;
+  }
+  .myName{
+    font-size:xx-large;
+    font-family:sans-serif;
+  }
+  .fixed-home {
+    position: fixed;
+    width: auto;
+    border: 3px black;
+    font-size: 11pt;
+    margin-top: -2%;
+  }
+  </style>
+</head>
+<body>
+  <div class="fixed-home">
+    <form method="get" action="/fa17g22">
+      <button>◄HOME</button>
+    </form>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 divNavigation">
+        <div class="myHeader">
+          <img src="fa17g22/img/Image.png" alt="myImage" class="img-responsive myPic"><br>
+          <h4>Akhila Panackal</h4>
+        </div>
+        <div class="myNav">
+
+          <ul class="nav nav-tabs sidebar-nav">
+
+            <li class="active">
+              <a data-toggle="tab" href="#home"><span class="glyphicon glyphicon-list-alt"></span> About Me</a>
+            </li>
+            <li>
+              <a data-toggle="tab" href="#skills"><span class="glyphicon glyphicon-certificate"></span> Skills</a>
+            </li>
+            <li>
+              <a data-toggle="tab" href="#experience"> <span class="glyphicon glyphicon-wrench"></span> Experience</a>
+            </li>
+            <li>
+              <a data-toggle="tab" href="#education"> <span class="glyphicon glyphicon-education"></span> Education</a>
+            </li>
+            <li>
+              <a data-toggle="tab" href="#contact"> <span class="glyphicon glyphicon-earphone"></span> Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-9 col-sm-offset-1 divMyHome well tab-content">
+        <div id="home" class="tab-pane fade in active">
+          <div class="myDescription col-sm-7">
+            <span class="myName">Akhila Cyriac Panackal</span><br>
+            Student<br>
+            <span>Student is an explorer</span>
+          </div>
+          <div class="myImage col-sm-4 ">
+            <img src="fa17g22/img/Image.png" alt="myImage" class="img-responsive myPic">
+          </div>
+        </div>
+        <div id="skills" class="tab-pane fade">
+          <h4><span class="glyphicon glyphicon-certificate"></span> Ability to Work Independently and Within Groups</h4><hr>
+          <h4><span class="glyphicon glyphicon-certificate"></span> Critical Thinking</h4><hr>
+          <h4><span class="glyphicon glyphicon-certificate"></span> Strong Problem Solver</h4><hr>
+          <h4><span class="glyphicon glyphicon-certificate"></span> Strong Oral and Written Communication</h4>
+
+        </div>
+        <div id="experience" class="tab-pane fade">
+          <h3>Infosys Ltd</h3>
+          <p><b>Senior Systems Engineer (Software Engineer)</b><br>
+            JUNE 2014 - AUGUST 2017<br>
+            Technologies Used: Microsoft Sharepoint,JavaScript, JQuery, Angular JS, CSS, Bootstrap and Media queries.</p>
+          </div>
+          <div id="education" class="tab-pane fade">
+            <h3>Hochschule Fulda</h3>
+            <p>Studying MSc in Global Software Development<br>
+              2017-2019</p>
+              <hr>
+              <h3>Mahatma Gandhi University</h3>
+              <p>Bachelor of Computer Science and Engineering<br>
+                2010-2014</p>
+              </div>
+              <div id="contact" class="tab-pane fade">
+                <span class="glyphicon glyphicon-envelope myIcon"></span> akhilacyriacpanackal@gmail.com<br>
+                <span class="glyphicon glyphicon-earphone myIcon"></span> +491744705695<br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      </body>
+      </html>

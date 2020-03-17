@@ -1,0 +1,52 @@
+{
+  "name": "biig",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "async": "latest",
+    "basic-auth-connect": "latest",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "latest",
+    "client-sessions": "latest",
+    "connect": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "dateformat": "latest",
+    "debug": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-mailer": "latest",
+    "express-session": "latest",
+    "fs-extra": "latest",
+    "http-proxy": "latest",
+    "md5": "latest",
+    "mime": "latest",
+    "mongoose": "latest",
+    "morgan": "~1.6.1",
+    "multer": "^1.3.0",
+    "mysql": "latest",
+    "node-constants": "latest",
+    "nodemailer": "latest",
+    "nodemailer-smtp-transport": "latest",
+    "numeral": "latest",
+    "passport": "latest",
+    "passport-local": "latest",
+    "pm2": "latest",
+    "raccoon": "^0.2.8",
+    "redis": "^2.8.0",
+    "request": "latest",
+    "serve-favicon": "latest",
+    "simple-encryptor": "latest",
+    "underscore": "latest"
+  },
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2"
+  },
+  "scripts": {
+    "start": "nodemon app.js"
+  }
+}

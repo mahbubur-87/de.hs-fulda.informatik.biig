@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+<style>
+.fixed-home {
+  position: fixed;
+  width: auto;
+  border: 3px black;
+  font-size: 11pt;
+  z-index: 1;
+}
+.divNavigation{
+  position: relative;
+  background:  rgba(0,0,0,0.1);
+  color: white;
+  height:30%;
+  font-size: large;
+  z-index: 0;
+}
+.myDescription{
+
+  font-size: 150%;
+  font-family: sans-serif;
+}
+.mynav{
+  padding: 10%;
+}
+body  {
+    background-image: url("img/software.png");
+}
+</style>
+
+<div class="fixed-home">
+  <form method="get" action="/fa17g22">
+    <button>◄HOME</button>
+  </form>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-9 divNavigation">
+        <div class="mynav">
+          <ul class="nav nav-pills nav-tabs">
+           <li class="active"><a href="#home" data-toggle="tab">About Me</a></li>
+           <li><a href="#skills" data-toggle="tab">Skills</a></li>
+           <li><a href="#edu" data-toggle="tab">Education</a></li>
+           <li><a href="#cont" data-toggle="tab">Contact</a></li>
+           <li><a href="#hob" data-toggle="tab">Hobbies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-3 " >
+        <img  src="img/me.jpg" class="img-responsive img-rounded" width="250" height="200"/>
+        <h2><strong><mark>Rohan Deo</mark></strong></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-9 ">
+        <div class="tab-content myDescription">
+          <div class="tab-pane fade in active" id="home">
+          <div class="well"
+            <p>Name : Rohan Deo
+<br><br>
+              Profession : Student
+            </p>
+          </div>
+          </div>
+          <div class="tab-pane fade" id="skills">
+            <div class="well">
+            <p>
+              Challenge Taker<br>
+              Good Programming Skills<br>
+              Flexible For Working In A Team As Well As Individual Work<br>
+              Good communication Skills<br>
+              Happy To Help <br>
+            </p>
+          </div>
+          </div>
+          <div class="tab-pane fade" id="edu">
+            <div class="well">
+            <p>
+              <strong>Hochschule Fulda</strong><br>
+              Pursuing M.Sc Global Software Development<br>
+            </p>
+            </div>
+            <div class="well">
+              <p>
+              <strong>Pune University</strong><br>
+              Graduated B.Sc Computer Science<br>
+              </p>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="cont">
+            <div class="well">
+            <span class="glyphicon glyphicon-envelope "></span> rohan.deo@informatik.hs-fulda.de<br><br>
+            <span class="glyphicon glyphicon-earphone "></span> +918788838632<br><br>
+          </div>
+          </div>
+          <div class="tab-pane fade" id="hob">
+            <div class="well">
+            <p>
+              Swimming<br>
+              Waterpolo<br>
+              Trekking<br>
+              Cycling<br>
+            </p>
+
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

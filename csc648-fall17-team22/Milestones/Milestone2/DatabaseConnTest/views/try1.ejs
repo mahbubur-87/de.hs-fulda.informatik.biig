@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Material Design for Bootstrap fonts and icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+
+  <!-- Material Design for Bootstrap CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/css/bootstrap-material-design.min.css" integrity="sha384-R80DC0KVBO4GSTw+wZ5x2zn2pu4POSErBkf8/fSFhPXHxvHJydT0CSgAP2Yo2r4I" crossorigin="anonymous">
+
+  <script>
+  function showAlert()
+  {
+         var readMsg = <%- typeof msg != 'undefined' ? JSON.stringify(msg) : "" %> ;
+         if(typeof readMsg != "")
+         {
+           alert(readMsg);
+         }
+   }
+   </script>
+
+</head>
+<body onload="showAlert()">
+  <div class="container">
+    <h3>
+      <br>Database Test<br>
+      <small class="text-muted">HS Fulda GSD Group fa17g22</small>
+    </h3>
+    <form method="post" action="/fa17g22/save">
+      <div class="form-group">
+        <label for="inputFirstName">First Name</label>
+        <input type="text" class="form-control" id="inputFirstName" name="fName" aria-describedby="firstNameHelp" placeholder="Enter First Name">
+      </div>
+      <div class="form-group">
+        <label for="inputLastName">Last Name</label>
+        <input type="text" class="form-control" id="inputLastName" name="lName" placeholder="Enter Last Name">
+      </div>
+      <div class="form-group">
+        <label for="inputDOB">Date of Birth</label>
+        <input type="date" class="form-control" id="inputDOB" name="dob" aria-describedby="dobHelp" max="1999-11-16" placeholder="Enter Date of Birth">
+        <small id="dobHelp" class="form-text text-muted">We need to make sure you're above 18.</small>
+      </div>
+      <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" class="form-control" id="inputEmail" name="email" aria-describedby="emailHelp" placeholder="Enter Email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-raised">Submit</button>
+    </form>
+    <form method="get" action="/fa17g22/getcustomers">
+      <button type="submit" class="btn btn-primary btn-raised">Get Customers</button>
+    </form>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/js/bootstrap-material-design.js" integrity="sha384-3xciOSDAlaXneEmyOo0ME/2grfpqzhhTcM4cE32Ce9+8DW/04AGoTACzQpphYGYe" crossorigin="anonymous"></script>
+  <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+</body>
+</html>

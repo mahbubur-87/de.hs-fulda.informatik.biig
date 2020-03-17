@@ -1,0 +1,423 @@
+<!--
+DashboardCompanyAdmin.ejs
+
+Description:
+This is Dashboard for Company
+Tabs:
+  -Admin profile
+      -Manage Profile Details
+  -Listing Agent
+      -Add Listing Agent
+      -Remove Listing Agent
+  -Company Sales
+     -Displays Company Sales
+
+Authors:Akhila,Mahdis,Swetaketu-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>BiiG</title>
+  <% include _linkToStylesheets.html %>
+</head>
+<body>
+  <% include _header.ejs %>
+  <% include _modalSignIn.html %>
+  <% include _modalSignUp.html %>
+  <br><br><br><br>
+  <div class="container-fluid align-items-center justify-content-center">
+   <div class="row p-3 justify-content-center">
+     <div class="col-sm-8">
+       <form method="GET" action="/search">
+           <div class="input-group add-on">
+             <% if(locals.key){%>
+             <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key" value="<%=key%>">
+             <%}
+             else{%>
+               <input class="form-control" aria-label="Text input with dropdown button" placeholder="Enter Address or City or Postalcode" id="srch-term" type="text" name="key">
+             <%}%>
+             <div class="input-group-btn">
+               <button type="submit" class="btn btn-primary">
+                   <span class="glyphicon glyphicon-search"></span> Search
+               </button>
+           </div>
+         </div>
+       </form>
+   </div>
+   </div>
+   <div class="row p-3 justify-content-center">
+     <div class="col-md-2 col-sm-2">
+       <div class="card">
+       <ul class="nav flex-column">
+     <li class="nav-item">
+       <a class="nav-link active" href="#a" data-toggle="tab"><h6>Admin Profile</h6></a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="#b" data-toggle="tab"><h6>Listing Agents</h6></a>
+     </li>
+     <li class="nav-item">
+       <a class="nav-link" href="#c" data-toggle="tab"><h6>Company Sales</h6></a>
+     </li>
+   </ul>
+ </div>
+    </div>
+    <div class="col-md-7 col-sm-7">
+      <div class="tab-content">
+        <div class="tab-pane active" id="a">
+          <% if(locals.userProfile){%>
+        <!-- begin form for edit-->
+        <form method="POST" action="/editemployee" id="editForm" style="display:none">
+          <input type="hidden" name="empid" value="<%= userProfile.employeeid %>">
+          <div class="card p-4">
+            <div class="form-group">
+              <label for="fname">First Name:</label>
+              <input type="text" class="form-control" id="fname" name="firstname" placeholder="Enter first name" value="<%=userProfile.firstname%>" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name:</label>
+              <input type="text" class="form-control" id="lname" name="lastname" placeholder="Enter last name" value="<%=userProfile.lastname%>" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<%=userProfile.email%>" required>
+            </div>
+            <div class="form-group">
+              <label for="phno">Phone Number:</label>
+              <input type="tel" class="form-control" id="phno" name="phone" placeholder="Enter Phone number" value="<%=userProfile.phonenumber%>" required>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-3">
+                  Address
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-8">
+                          <input id="streetname" type="text" name="streetname" title="Street Name" placeholder="Street Name" class="form-control" value="<%=userProfile.street%>" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <input id="housenumber" type="text" name="housenumber" title="House Number" placeholder="House Number" class="form-control"  value="<%=userProfile.housenumber%>" required/>
+                        </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <select id="country" name="country" class="form-control" required></select>
+                      </div>
+                      <div class="col-md-6">
+                        <select name="state" id="state" class="form-control"><option value="0" disabled selected required>Select State</option></select>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input id="plz" type="number" name="plz" title="PLZ" placeholder="PLZ" class="form-control" value="<%=userProfile.plz%>" required/>
+                        </div>
+                        <div class="col-md-6">
+                          <input id="city" type="text" name="city" title="City" placeholder="City" class="form-control" value="<%=userProfile.city%>" onfocus="loadCity()" required/>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+       </form>
+         <!-- end form for edit-->
+
+          <div class="card p-4" id="viewForm">
+            <div class="card-block">
+              <div class="row">
+                <div class="col-md-4">
+                  <h6>First Name</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.firstname%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Last Name</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.lastname%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Email</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.email%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Address</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.street%> <%=userProfile.housenumber%>, <%=userProfile.plz%>, <%=userProfile.city%>, <%=userProfile.state%>, <%=userProfile.country%></span>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <h6> Phone Number</h6>
+                </div>
+                <div class="col-md-8">
+                  <span class="userValue"><%=userProfile.phonenumber%></span>
+                </div>
+             </div>
+             <hr>
+             <% if(userProfile.country && userProfile.state){ %>
+               <button type="button" class="btn btn-primary" onclick="showedit('<%=userProfile.country%>','<%=userProfile.state%>')">Edit</button>
+             <% }
+             else{%>
+               <button type="button" class="btn btn-primary" onclick="showedit('undefined','undefined')">Edit</button>
+               <%}%>
+        </div>
+      </div>
+        <% } %>
+        </div>
+        <div class="tab-pane" id="b">
+          <% if(locals.agents){%>
+            <div class="agentsView">
+              <div>
+                <button type="button" class="btn btn-default" onclick="AddAgent()">New AGent</button>
+              </div>
+              <%for(var i = 0;i < agents.length;i++) { %>
+              <div class="card p-3 m-2">
+                <div class="row card-block">
+                  <div class="col-sm-8 col-md-8">
+                    <div class="card-text">
+                      <div class='row'>
+                        <div class='col-md-4'>
+                          <b>First Name</b>
+                        </div>
+                        <div class='col-md-8'>
+                          <span class='userValue'><%=agents[i].firstname%></span>
+                        </div>
+                      </div>
+                      <div class='row'>
+                        <div class='col-md-4'>
+                          <b>Last Name</b>
+                        </div>
+                        <div class='col-md-8'>
+                          <span class='userValue'><%=agents[i].lastname%></span>
+                        </div>
+                      </div>
+                      <div class='row'>
+                        <div class='col-md-4'>
+                          <b>Email</b>
+                        </div>
+                        <div class='col-md-8'>
+                          <span class='userValue'><%=agents[i].email%></span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-sm-4 col-md-4">
+                    <button type="button" class="btn btn-default btn-sm" onclick="RemoveAgent(<%=agents[i].id%>,this)">X</button>
+                  </div>
+                </div>
+              </div>
+                <% }%>
+              </div>
+              <%}else{%>
+              <div class="agentsView">
+                <button type="button" class="btn btn-default btn-sm" onclick="AddAgent()">New AGent</button>
+              </div>
+              <%}%>
+
+            <div class="agentsNew" style="display:none">
+              <div class="jumbotron m-3">
+              <form name="signUpAgent" method="post" action="/signupagent" id="signUpAgent">
+                <input placeholder="Name" title="Name" name="firstname" type="text" class="form-control" required autofocus/>
+                <input placeholder="Surname" title="Surname" name="lastname" type="text" class="form-control" required/>
+                <input type="email" name="email" class="form-control" placeholder="Email address" title="Email Address" required/>
+                <input type="password" placeholder="Password" id="password" class="form-control" name="password" required/>
+                <input type="password" placeholder="Confirm Password" id="confirmpassword" class="form-control" required/>
+                <label>Security Question</label>
+                <select class="form-control" name="securityQuestion" required>
+                  <option value="" disabled selected>Choose One</option>
+                  <% if (locals.secQ) { %>
+                    <% for(var i=0; i < secQ.length; i++) { %>
+                      <option value="<%= secQ[i].id %>"><%= secQ[i].value %></option>
+                      <% } %>
+                      <% } %>
+                    </select>
+                    <input placeholder="Security Answer" type="text" id="securityAnswer" name="securityAnswer" class="form-control" required>
+                    <div id="remember" class="checkbox">
+                      <label>
+                        <input type="checkbox" id="chkTermsCustomer" required> I agree with the <a href="#tcmodal" data-toggle="modal">terms and conditions</a>.
+                      </label>
+                    </div>
+                    <input type="submit" id="submitbutton" class="btn btn-primary btn-block" value="REGISTER">
+                </form>
+              </div>
+              <input type="button"  onclick="Backedit()" id="backbutton" class="btn btn-primary btn-sm" value="BACK">
+
+            </div>
+        </div>
+        <div class="tab-pane" id="c">
+
+
+<% if(locals.sales){%>
+  <table class="table table-striped">
+    <thead>
+     <tr>
+       <th>Num</th>
+       <th>Date</th>
+       <th>Property Name</th>
+       <th>Sold by</th>
+       <th>Sold To</th>
+       <th>Price</th>
+     </tr>
+     </thead>
+     <tbody>
+     <%for(var i = 0;i < sales.length;i++) { %>
+       <tr>
+         <th scope="row"><%= i+1 %></th>
+         <td><%= sales[i].date %></td>
+         <td><%= sales[i].propertyname %></td>
+         <td><%= sales[i].soldby %></td>
+         <td><%= sales[i].soldto %></td>
+         <td><%= sales[i].price %></td>
+      </tr>
+      <% }%>
+    </tbody>
+    </table>
+    <%}else{ %>
+      <div class="card p-3 m-2">
+          No Sales
+      </div>
+<% } %>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-3">
+      <div class="card testimonial-card align-items-center">
+          <% if(locals.userProfile){%>
+            <a href="#" class="profile-pic m-2">
+                <% if(userProfile.profilepicture){ %>
+              <div class="profile-pic"  style="background-image:url('<%=userProfile.profilepicture%>')" >
+              <%}
+              else {%>
+                <div class="profile-pic"  style="background-image:url('/img/assets/avatar.png')" >
+
+              <% }%>
+              <div class="myUpload pt-5" style="display:none">
+              <form id="frmUploader" enctype="multipart/form-data" action="/upload" method="post">
+                <label id="myUserId" hidden><%=userProfile.employeeid%></label>
+                <span>
+                <span class="btn btn-file">
+                    <input type="file" id="imgInp" name="fileUser" hidden>
+                    <label for="imgInp">Browse</label>
+                </span>
+              </span>
+            </form>
+            </div>
+              </div>
+            </a>
+            <div class="card-body">
+              <h6><%=userProfile.firstname%></h6>
+              <h6><%=userProfile.email%><h6>
+            </div>
+
+          <% } %>
+          </div>
+      </div>
+  </div>
+</div>
+<div id="dialog" title="Confirmation" style="display:none">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure to delete Agent?</p>
+</div>
+<% include _linkToScripts.html %>
+<% include UserProfileImage.html%>
+<script type="text/javascript" src= "js/countries.js"></script>
+  <script>
+  //populate all countries and states
+    populateCountries("country", "state");
+  //Displays edit form for User profile
+    function showedit(country,state){
+      $("#viewForm").hide();
+      $("#editForm").show();
+      if(country!="undefined")
+        $("#country").val(country);
+      populateStates('country', 'state');
+      if(state!="undefined")
+        $("#state").val(state);
+    }
+    function Backedit(){
+      $(".agentsNew").hide();
+      $(".agentsView").show();
+    }
+    function AddAgent(){
+      $(".agentsView").hide();
+      $(".agentsNew").show();
+
+    }
+
+    //Removing Listing agent
+    //With Confirm message
+    function RemoveAgent(id,element){
+        $("#dialog").dialog({
+          resizable: false,
+          height: "auto",
+          width: 400,
+          modal: true,
+          buttons : {
+          "Confirm" : function() {
+            $(element).parent().closest('.card').remove();
+            var restUrl="/deleteagent";
+            $.ajax({
+                type     : "POST",
+                cache    : false,
+                url      : restUrl,
+                data     : {empID: id},
+                success  : function(data) {
+                  //alert(data.message);
+                  toastr.info(data.message);
+                }
+            });
+            $(this).dialog("close");
+          },
+          "Cancel" : function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+
+    }
+    // Adding listing agent
+    $('#signUpAgent').on('submit',function(e){
+      e.preventDefault();
+      $.ajax({
+          type     : "POST",
+          cache    : false,
+          url      : $(this).attr('action'),
+          data     : $(this).serialize(),
+          success  : function(data) {
+            var htmlagents="<div><button type='button' class='btn btn-default' onclick='AddAgent()'>New Agent</button></div>";
+            $.each(data,  function (index, element) {
+               htmlagents +="<div class='col-md-10 card p-4 m-2'><div class='row card-block'><div class='col-sm-8 col-md-8'><div class='card-text'><div class='row'><div class='col-md-4'><b>First Name</b></div><div class='col-md-8'><span class='userValue'>"+element.firstname+"</span></div></div>&nbsp;<div class='row'><div class='col-md-4'><b>Last Name</b></div><div class='col-md-8'><span class='userValue'>"+element.lastname+"</span></div></div>&nbsp;<div class='row'><div class='col-md-4'><b>Email</b></div><div class='col-md-8'><span class='userValue'>"+element.email+"</span></div></div></div></div><div class='col-sm-4 col-md-4'><button type='button' class='btn btn-default btn-sm' onclick='RemoveAgent("+element.id+",this)'>X</button></div></div></div>";
+             });
+            $(".agentsNew").hide();
+            $('.agentsView').html(htmlagents);
+            $(".agentsView").show();
+            $('#signUpAgent')[0].reset();
+          }
+      });
+
+  });
+  </script>
+</body>
+</html>
