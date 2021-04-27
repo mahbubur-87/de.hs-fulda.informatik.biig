@@ -33,7 +33,7 @@
     "passport-local": "latest",
     "pm2": "latest",
     "raccoon": "^0.2.8",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "request": "latest",
     "serve-favicon": "latest",
     "simple-encryptor": "latest",
